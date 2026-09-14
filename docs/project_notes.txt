@@ -799,3 +799,38 @@ by a wide margin on accuracy and macro F1, but macro F1 is still low
 because several minority classes have too few test examples (as few as 1)
 to evaluate reliably — that's expected for a 450-example first pass, not a
 final result, and it's still trained on silver labels, not the gold set."
+
+
+STEP 11 — HISTORICAL RESPONSE RETRIEVAL
+=========================================================
+
+What we did: Built a TF-IDF + cosine-similarity retriever
+(scripts/retrieve_historical_replies.py) over EVERY AppleSupport thread with
+a customer message and a reply (80,639 threads, reusing thread
+reconstruction) — not just the 450-example labeled sample. Each result is
+tagged with a response_type (direct instruction/link, clarifying question,
+DM handoff, confirmation/status, other/unclear) so a DM handoff is never
+shown as if it were a resolution. Intent is attached only where a genuine
+Step 9 label exists (435 rows); it's a soft ranking boost, not a filter, so
+retrieval still works for the other ~80,200 unlabeled rows.
+
+Why: A reply-drafting step later needs real historical examples to ground
+in — but Steps 3A/3B already showed most public replies are triage, not
+fixes, so every result must show HOW it resolved (or didn't), not just that
+it's similar.
+
+Key result: Corpus-wide response_type distribution: DM handoff 52.8%,
+direct instruction/link 26.4%, clarifying question 14.7%, other/unclear
+4.3%, confirmation/status 1.7% — matching the ~51% DM-handoff rate found on
+the small samples in Steps 3A/3B, a good cross-check. Demo queries
+(scripts/demo_retrieval_queries.py) across 5 intents returned clearly
+on-topic real historical matches (e.g. a WiFi-disconnect query top-matched
+other WiFi-disconnect complaints). Retrieval QUALITY has not been evaluated
+— no golden set exists yet.
+
+Interview explanation: "I built retrieval over the full 80,000+ thread
+AppleSupport corpus, not just my small labeled sample, using plain TF-IDF
+cosine similarity — no vector database needed at this scale. Every result
+is tagged with how AppleSupport actually responded, because I already knew
+from earlier analysis that half of replies are just 'DM us,' not an actual
+fix, so I can't let retrieval imply otherwise."
