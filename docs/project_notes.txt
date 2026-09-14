@@ -1,0 +1,774 @@
+HIVER SDE INTERN ASSIGNMENT — PROJECT NOTES (STEPS 1-4)
+=========================================================
+
+Purpose of this file: my own plain-language notes so I can explain this
+project clearly and confidently to Hiver evaluators/interviewers. Not
+polished marketing copy — just an honest record of what was done, why, and
+what the real numbers were. Written to be understandable to a final-year
+CSE student (i.e. me).
+
+Golden rule I'm keeping in mind throughout: sample-level numbers (from a
+few-hundred-thread sample) are NOT the same as population-level numbers
+(the full ~2.8M-row / ~80k-thread dataset), and a support reply that just
+says "DM us" is NOT the same as a confirmed resolution. I need to keep these
+two distinctions straight everywhere below and in the live interview.
+
+
+STEP 1 — PROJECT SETUP
+=========================================================
+
+1. What we did
+---------------
+Set up the repository skeleton before touching any data: Python environment,
+folder structure, .gitignore, requirements files, a README skeleton, and an
+empty decision log. Made a first Git commit, then pushed to GitHub
+(origin: https://github.com/cvenugopal2005/hiver-sde-support-agent.git).
+
+2. Why we did it
+-----------------
+The assignment explicitly wants real Git history that shows how the project
+actually evolved, and a repo structure that maps directly onto the required
+deliverables (repo, golden eval set, evaluation harness, report, decision
+log) — not a big-bang commit at the end.
+
+3. How we did it
+------------------
+- Python 3.11 (installed via Homebrew as python3.11, since the system
+  default was 3.13) inside a project-local virtualenv (.venv).
+- src-layout package: src/hiver_agent/ (with __init__.py and a placeholder
+  config.py).
+- Top-level folders: data/ (raw/, processed/), notebooks/, tests/, scripts/,
+  configs/, evaluations/, reports/, docs/.
+- requirements.txt (runtime deps) and requirements-dev.txt (pytest, ruff)
+  kept separate.
+- .gitignore covers: Python caches, the venv, .env secrets, Jupyter
+  checkpoints, IDE/OS junk files, test/lint caches, build artifacts, and —
+  importantly — data/raw/*, data/processed/*, evaluations/results/, and
+  reports/generated/, so large/generated files never get committed.
+- First commit: repo scaffold. A small follow-up commit later tightened the
+  .gitignore further.
+
+4. Important actual findings/results
+--------------------------------------
+No dataset work happened in this step — it's pure scaffolding. The only
+"result" is that the environment reproduces cleanly: `ruff check .` and
+`pytest -q` both ran clean against the empty scaffold.
+
+5. Technical decisions and why we made them
+-----------------------------------------------
+- Chose Python 3.11 specifically (not whatever the system default was)
+  for a stable, modern interpreter with good data/LLM library support.
+- Deliberately did NOT add Kubernetes, MLflow, a database, or any other
+  heavy infrastructure — none of it is needed for this assignment, and
+  adding it would just be complexity for its own sake.
+- Kept data/raw and data/processed gitignored from day one, since the raw
+  dataset is ~500MB and none of it should ever be pushed to GitHub.
+
+6. Limitations/caveats
+------------------------
+This step has no analytical limitations — it's just setup. The one thing
+worth remembering: the repo was git-initialized before any dataset existed,
+so the earliest commits are scaffold-only, and dataset-derived files were
+added later.
+
+7. How I would explain this to an evaluator (verbal)
+--------------------------------------------------------
+"Before touching the data, I set up a normal Python project: a src-layout
+package, separate folders for data, scripts, tests, configs, evaluations,
+and reports, a .gitignore that keeps the ~500MB dataset and any generated
+files out of Git, and split requirements files for runtime vs dev tools. I
+committed that scaffold first so the Git history actually reflects how the
+project was built, instead of one giant commit at the end."
+
+
+STEP 2A — DATASET INVESTIGATION
+=========================================================
+
+1. What we did
+---------------
+Downloaded the actual Kaggle "Customer Support on Twitter" dataset
+(twcs.csv) into data/raw/ and inspected it directly with pandas — schema,
+row count, missing values, the inbound/outbound split, timestamp range, and
+whether conversations can actually be reconstructed from it.
+
+2. Why we did it
+-----------------
+The assignment explicitly says not to assume dataset statistics — everything
+has to come from actually looking at the file. This step answers the basic
+question "what do we actually have to work with?" before any brand or
+intent decisions are made.
+
+3. How we did it
+------------------
+Wrote scripts/inspect_dataset.py, which loads the CSV with pandas
+(dtype=str, since author_id mixes numeric customer IDs with text brand
+handles like "sprintcare") and prints: file size, columns, row count,
+per-column missing counts, the inbound value counts, the created_at range,
+text-field emptiness, and stats on the two relationship columns
+(response_tweet_id, in_response_to_tweet_id).
+
+4. Important actual findings/results
+--------------------------------------
+- File: twcs.csv, ~516.5 MB, 2,811,774 rows.
+- Columns (exactly): tweet_id, author_id, inbound, created_at, text,
+  response_tweet_id, in_response_to_tweet_id.
+- No missing tweet_id, author_id, inbound, created_at, or text.
+- response_tweet_id missing in 1,040,629 rows (37.0%); in_response_to_tweet_id
+  missing in 794,335 rows (28.3%).
+- inbound=True (customer messages): 1,537,843 rows (54.7%).
+  inbound=False (support/brand replies): 1,273,931 rows (45.3%).
+- created_at ranges from 2008-05-08 to 2017-12-03 — all real tweets parsed
+  fine except a tiny sliver needing a slower fallback parser.
+- tweet_id has zero duplicates, so it's a safe unique key — but it is NOT
+  a contiguous 1..N range (has gaps), which matters for how you look up a
+  tweet by ID later (can't just index by position).
+- There is NO explicit brand/company column in this dataset — confirmed by
+  literally printing the column list, not assumed.
+- Brands are identifiable another way: inbound=False rows use author_id as
+  a text handle (e.g. "AppleSupport", "sprintcare") instead of a numeric
+  customer ID. There are exactly 108 distinct such handles, and zero overlap
+  between the set of handles used by customers (inbound=True) and the set
+  used by brands (inbound=False) — a very clean split.
+- Checked (didn't assume) that conversations can be reconstructed: took a
+  sample of 2,000 rows with in_response_to_tweet_id set, and 99.8% of them
+  pointed to a tweet_id that actually exists in the file.
+
+5. Technical decisions and why we made them
+-----------------------------------------------
+- Loaded everything as strings (dtype=str) instead of letting pandas guess
+  types, specifically because author_id mixes numbers and text.
+- Used the 108 inbound=False author_id values as the ground truth for "what
+  brands exist," instead of hardcoding a brand list or inventing a column.
+
+6. Limitations/caveats
+------------------------
+- response_tweet_id can hold MULTIPLE comma-separated tweet IDs in one row
+  (222,426 rows do this) — a naive "one reply per tweet" assumption would
+  silently drop data. Noted for later, not yet handled at this step.
+- ~0.2% of in_response_to_tweet_id values don't resolve to any tweet in the
+  file (dangling references) — small but real and worth tracking.
+
+7. How I would explain this to an evaluator (verbal)
+--------------------------------------------------------
+"I didn't trust any assumptions about the dataset — I loaded the actual CSV
+and checked everything directly. It's 2.8 million rows with no missing text,
+roughly 55% customer messages and 45% support replies, and there's no brand
+column at all. Instead, brands show up as 108 distinct account handles that
+only ever appear on the support side, never the customer side, which turned
+out to be a clean and reliable way to identify them."
+
+
+STEP 2B — BRAND / CONVERSATION ANALYSIS
+=========================================================
+
+1. What we did
+---------------
+Reconstructed actual conversation threads from the raw rows, then computed
+real per-brand metrics (volume, conversation depth, resolution pairs, data
+quality) across all 108 brands, to pick a shortlist of good candidate brands
+— without just picking the brand with the most tweets.
+
+2. Why we did it
+-----------------
+The assignment needs one brand with (a) enough volume, (b) genuine
+multi-turn conversations (not just one reply and done), and (c) clean
+enough data to build a reliable pipeline on. Raw tweet count alone doesn't
+tell you any of that.
+
+3. How we did it
+------------------
+Wrote scripts/analyze_brands.py. Threads were reconstructed using ONLY the
+in_response_to_tweet_id column: every tweet points at the one tweet it
+replied to (its "parent"), and by walking that chain upward you reach the
+first message of the conversation (the "root"). All tweets that trace back
+to the same root belong to the same thread. This was done efficiently with
+a vectorized numpy technique ("pointer jumping") instead of a slow per-row
+Python loop.
+
+Important design choice: response_tweet_id (which can list several reply
+IDs per row) was deliberately NOT used for this, because it's redundant
+information (same edges, just in reverse) and using it risks the
+"one-reply-per-tweet" bug the assignment specifically warns about. Using
+only in_response_to_tweet_id sidesteps that problem entirely.
+
+For ranking brands, "resolution pairs" (a thread that has at least one real
+customer message AND at least one real brand reply) was used as the primary
+signal, plus conversation-depth stats (% of threads with 3+ / 4+ back-and-
+forth turns) — not just total tweet count.
+
+4. Important actual findings/results
+--------------------------------------
+- 798,197 total distinct conversation threads in the whole dataset; only
+  3,862 rows (0.14%) had a dangling parent reference.
+- Top brands by resolution pairs: AmazonHelp (82,498), AppleSupport
+  (80,639), Uber_Support (41,902), SpotifyCares (28,250), AmericanAir
+  (26,202), Delta (26,052), comcastcares (23,901).
+- Some smaller brands had much deeper conversations per thread even though
+  their volume was lower — e.g. Tesco, VerizonSupport, MicrosoftHelps,
+  AskAmex, XboxSupport all had noticeably higher "3+ turn" and "4+ turn"
+  percentages than the biggest brands.
+- Checked the "@handle at the start of the message" idea as a shortcut for
+  identifying brand conversations — it only covered 47-66% of customer
+  messages per brand, so it's real but not reliable enough to use alone.
+  This confirmed the thread-reconstruction approach above was necessary,
+  not just a nice-to-have.
+- AppleSupport became the strongest candidate: very high volume, very low
+  data-quality issues (lowest "dangling" percentage among the top brands),
+  and a domain (one product ecosystem: iPhone/iOS/Mac/Apple ID) that looked
+  narrower and more learnable than something like Amazon's sprawling
+  order/delivery/refund/device/membership space.
+
+5. Technical decisions and why we made them
+-----------------------------------------------
+- Reconstructing threads from in_response_to_tweet_id only (not
+  response_tweet_id) — simpler and avoids a specific known pitfall.
+- Ranking by resolution pairs and conversation depth, not raw tweet volume,
+  because the assignment explicitly said not to rank by tweet count alone.
+- Did NOT invent a single combined "score" formula to rank brands — kept
+  all the raw metrics visible and made the brand choice a judgment call
+  based on them, since a fabricated scoring formula would hide the
+  reasoning.
+
+6. Limitations/caveats
+------------------------
+- This dataset turned out to be uniformly clean across almost all 108
+  brands (very low dangling-reference rates everywhere), so data quality
+  alone didn't really distinguish candidates — the real differentiator was
+  conversation depth and domain shape.
+- At this stage we hadn't yet looked at whether a brand's actual problems
+  form a small, learnable set of intents — that came later (Step 3A).
+
+7. How I would explain this to an evaluator (verbal)
+--------------------------------------------------------
+"Instead of just picking the brand with the most tweets, I rebuilt actual
+conversation threads from the reply-chain column, then ranked brands by how
+many genuine two-sided conversations they had and how deep those
+conversations went. AppleSupport came out on top: huge volume, very clean
+data, and a domain that's narrower than something like Amazon, which made
+it a better candidate for a small intent taxonomy."
+
+
+STEP 3A — APPLESUPPORT EXPLORATION
+=========================================================
+
+1. What we did
+---------------
+Took a random, reproducible sample of 400 real AppleSupport conversation
+threads and manually read through the actual customer messages to find
+recurring problem patterns — without applying a predefined taxonomy like
+"billing/account/device/software" upfront.
+
+2. Why we did it
+-----------------
+Before deciding on intents, we needed to actually see what AppleSupport
+customers ask about, in their own words, instead of guessing categories
+from general knowledge of Apple products.
+
+3. How we did it
+------------------
+Wrote scripts/explore_applesupport.py, reusing the same thread
+reconstruction from Step 2B (not a second, different implementation).
+Sampled 400 AppleSupport threads with a fixed random seed (seed=42), keeping
+only threads that had at least one real customer message and at least one
+real AppleSupport reply. Dumped all the sampled customer messages to a text
+file and read through all of them manually, plus computed simple word-
+frequency counts as an aid (no LLM or embeddings used for this).
+
+4. Important actual findings/results (SAMPLE-LEVEL — this is one 400-thread
+sample, not the full AppleSupport population)
+--------------------------------------------------------------------------
+- Sample: 400 threads, 677 customer messages, 536 AppleSupport replies.
+- Mean thread length 3.03 messages, median 2.0.
+- 63.0% of threads had exactly 2 turns; 37.0% had 3+ turns; 29.5% had 4+
+  turns.
+- Found around 14 recurring issue themes by manual reading, including: a
+  very specific iOS 11.1 "autocorrect turns the letter I into a weird box"
+  bug (~88 of 677 messages — unexpectedly large), battery drain (~59),
+  freezing/crashing/slow performance (~63), WiFi/Bluetooth/connectivity
+  (~30), Apple Music/iTunes sync issues (~26), data loss like disappearing
+  photos/contacts (~17), account/Apple ID/password issues (~14),
+  purchases/billing/refunds (~16), hardware/warranty/repair (~16), plus
+  smaller ones: pre-purchase questions (~10), accessibility/VoiceOver-
+  Braille (~9), security/phishing concerns (~3-5), and general keyboard
+  bugs other than the "I" glitch (~12).
+- Looked at actual AppleSupport replies (not just customer messages) to see
+  how issues get handled: 48.3% (259 of 536) of AppleSupport's replies
+  contain the exact same "meet us in DM" link — meaning the real fix isn't
+  visible in the public dataset for nearly half of all replies. 33.4%
+  (179 of 536) ask a clarifying question (like "which iPhone model?")
+  instead of giving a fix. Only a minority of replies show a visible
+  resolution.
+- IMPORTANT: this means for a lot of conversations, all we can see is "here's
+  a link to DM us" — NOT proof the customer's problem actually got solved.
+  I have to be careful never to claim "AppleSupport resolved X%" when what I
+  actually measured is "X% of replies point to a DM."
+
+5. Technical decisions and why we made them
+-----------------------------------------------
+- No LLM or embedding model was used for clustering — did it by transparent
+  keyword frequency + manually reading all 677 real messages, so every
+  cluster can be traced back to actual text, not an opaque model decision.
+- Deliberately avoided assuming categories like "billing/account/device"
+  upfront, per the assignment's instruction, and instead let the clusters
+  emerge from the real messages.
+
+6. Limitations/caveats
+------------------------
+- All numbers above are from ONE 400-thread sample — they are not
+  population-level AppleSupport statistics.
+- The very large "I" bug cluster is almost certainly a side effect of WHEN
+  this dataset was collected (Oct-Dec 2017, right when that bug was live),
+  not a general property of AppleSupport traffic — flagged for later.
+- Clustering was manual/keyword-based, not exact — cluster boundaries and
+  counts are approximate, not precise labels.
+
+7. How I would explain this to an evaluator (verbal)
+--------------------------------------------------------
+"I sampled 400 real AppleSupport conversations and read through the actual
+customer messages myself rather than guessing categories. I found clear
+recurring themes — battery, connectivity, syncing/data loss, account and
+billing, hardware, and a surprisingly large cluster around one specific
+iOS 11 autocorrect bug. I also looked at AppleSupport's actual replies and
+found that about half of them just redirect to a private DM — so the public
+dataset mostly shows the triage step, not the final fix, which is an
+important limitation I had to keep in mind."
+
+
+STEP 3B — VALIDATION
+=========================================================
+
+1. What we did
+---------------
+Drew a second, independent 400-thread AppleSupport sample using a different
+random seed (seed=123) and checked whether everything found in Step 3A
+still held up, instead of trusting a single sample.
+
+2. Why we did it
+-----------------
+One sample could always be a fluke. Before locking in a taxonomy, it's
+important to check the patterns are real and repeatable, not an accident of
+which 400 threads got picked.
+
+3. How we did it
+------------------
+Wrote scripts/validate_applesupport.py, which reuses the exact same
+sampling method and thread reconstruction from Steps 2B/3A (just a
+different seed) instead of writing new logic. Compared the two samples on
+basic stats, on the same issue-pattern keyword tags, and added a rough
+categorization of AppleSupport's actual replies (clarifying question, DM
+handoff, escalation, status update, confirmed resolution, link/instructions,
+direct troubleshooting, or no visible resolution).
+
+4. Important actual findings/results (SAMPLE-LEVEL, comparing two
+independent 400-thread samples)
+--------------------------------------------------------------------------
+- Sample independence check: only 3 threads out of 400 appeared in BOTH
+  samples — confirms these really are two separate, independent draws.
+- Sample 2 stats: 400 threads, 627 customer messages, 520 AppleSupport
+  replies, mean thread length 2.87 (vs 3.03 in sample 1), median 2.0 (same),
+  67.8% exactly-2-turn threads (vs 63.0%), 32.3% with 3+ turns (vs 37.0%),
+  24.8% with 4+ turns (vs 29.5%). Close enough to sample 1 to look like
+  normal sampling variation, not a different population.
+- Every issue pattern from Step 3A recurred at a very similar rate in
+  sample 2: battery/performance ~15.5%/15.8%, connectivity ~4.4%/3.2%,
+  music/sync/data-loss ~5.9%/6.1%, account/purchase/billing ~4.3%/4.0%,
+  hardware/repair/warranty ~2.4%/1.4%, messaging/FaceTime ~1.8%/1.6%,
+  software/keyboard bugs ~6.8%/6.7% (sample1/sample2 respectively).
+- The "I" autocorrect bug specifically: 13.0% of sample 1's customer
+  messages vs 12.6% of sample 2's — still huge and still consistent. Its
+  canned reply also recurred: 44/536 (8.2%) of sample-1 replies used the
+  identical "work around the issue until it's fixed..." sentence, and
+  35/520 (6.7%) did in sample 2. So it's real and repeatable, but it still
+  looks like ONE specific dated event (tied to iOS 11.1, a known real-world
+  bug from Nov 2017), not a permanent category of AppleSupport issues —
+  both samples come from the same 2017 time window, so this can't be fully
+  ruled out either way.
+- Reply-pattern comparison (both samples): DM handoff ~51.5%/51.2% (the
+  single biggest category by far), link/instructions ~22.0%/23.3%,
+  clarifying question ~15.7%/13.1%, direct troubleshooting only ~3.0%/3.3%,
+  explicit confirmation of resolution only ~2.2%/2.3%, escalation/referral
+  ~1.3%/1.3%, status/update ~0%/0.6%, unclear/no visible resolution
+  ~4.3%/5.0%.
+
+5. Technical decisions and why we made them
+-----------------------------------------------
+- Reused the Step 3A sampling function with just a new seed parameter,
+  instead of writing a second, possibly-inconsistent sampling method.
+- Kept the reply classification as a transparent, priority-ordered keyword
+  heuristic (not an LLM) so every label can be explained and re-checked —
+  labeled clearly as an approximate observation, not ground truth.
+
+6. Limitations/caveats
+------------------------
+- Both samples come from the same overall dataset time window (2017), so
+  this validation can't rule out the whole dataset being skewed toward
+  "iOS 11 launch problems" — only that the pattern isn't a one-sample
+  fluke.
+- The reply classifier is a simple keyword heuristic with a fixed priority
+  order — a reply that both asks a question AND contains a link gets
+  counted under whichever rule is checked first, so category boundaries are
+  approximate.
+- These are observations about what the TEXT looks like, not proof that any
+  individual customer's problem was actually, successfully fixed.
+
+7. How I would explain this to an evaluator (verbal)
+--------------------------------------------------------
+"I didn't trust the first 400-thread sample on its own, so I drew a second,
+independent sample with a different random seed and checked whether the
+same patterns showed up. They did — battery, connectivity, sync issues, the
+'I' bug, all recurred at almost the same rates in both samples, and only 3
+threads overlapped between them, so this wasn't a coincidence. I also found
+that in both samples, about half of AppleSupport's replies are just DM
+redirects rather than visible fixes, which is an important constraint on
+how much I can 'ground' replies in historical public text."
+
+
+STEP 4 — INTENT TAXONOMY
+=========================================================
+
+1. What we did
+---------------
+Turned the recurring patterns from Steps 3A/3B into a final, fixed list of
+8 customer-support intents for AppleSupport, with clear definitions, rules
+for handling overlapping/ambiguous messages, and an explicit decision about
+the "I" autocorrect bug. Wrote it all up in configs/intent_taxonomy.md.
+
+2. Why we did it
+-----------------
+The assignment needs a SMALL (5-10), well-justified intent set to actually
+train a classifier on later — not an ad-hoc list. It had to come from the
+patterns we actually observed and replicated, not be invented from general
+knowledge of what Apple support "should" look like.
+
+3. How we did it
+------------------
+Started from the 8 candidate groups already observed in Steps 3A/3B, then
+merged the two that behaved the same way operationally (Apple Music/sync
+issues + general data loss into one; account/login + purchases/billing into
+one), and added one new intent — "General/Pre-Purchase Inquiry" — for
+messages that don't describe a problem at all (just a buying/policy
+question), because that changes how the auto-handle/escalate decision
+should work later. Used the actual sample data (both the seed=42 and
+seed=123 samples) to estimate roughly how many examples of each intent
+exist, instead of guessing.
+
+4. Important actual findings/results — the final 8 intents (in simple terms)
+--------------------------------------------------------------------------
+1. Battery & Performance — phone/app is slow, freezing, crashing, or
+   battery drains fast, usually blamed on "the update." Biggest or
+   second-biggest intent (~13-14% of sample messages).
+2. Connectivity — WiFi, Bluetooth, or cellular/LTE won't connect or stay
+   connected (~3-4%).
+3. Apple Music / iCloud Sync & Data Loss — songs, playlists, photos, or
+   contacts vanish, or won't sync across devices (~5%).
+4. Account, Purchases & Billing — login/password/Apple ID problems,
+   wrong charges, refunds, subscriptions (~4%).
+5. Hardware, Repair & Warranty — a physical defect, or a warranty/repair/
+   replacement request (~1.4-2.4%, the thinnest reliable class).
+6. Messaging & Communication — iMessage/SMS/FaceTime/voicemail itself is
+   broken (~1.3%, also very thin).
+7. Software / App Bug Report — a specific app/feature misbehaves in a way
+   not covered above; this INCLUDES the "I" autocorrect bug as a sub-case.
+   The single largest intent once merged (~18%).
+8. General / Pre-Purchase Inquiry — no problem at all, just a buying or
+   policy question (smallest and hardest to count reliably by keyword
+   search, but a real, distinct category).
+
+5. Technical decisions and why we made them
+-----------------------------------------------
+- The "I" autocorrect bug decision: it's folded INTO "Software/App Bug
+  Report" as a sub-case, not its own top-level intent. Reasoning: it's
+  huge (~13% of messages, both samples) and has by far the cleanest,
+  most reusable historical reply (a nearly identical canned sentence
+  appeared in 6.7-8.2% of ALL AppleSupport replies, across both samples)
+  — but its very uniform text pattern and reply both point to it being
+  ONE dated, viral bug event (iOS 11.1, Nov 2017), not a lasting category
+  of AppleSupport traffic. Giving it its own permanent top-level intent
+  would look like the taxonomy was overfit to one historical bug. But it
+  wasn't thrown away either, because it's real data and the best example
+  of a genuinely groundable reply in the whole dataset.
+- Primary-intent rule (for messages that mention more than one issue):
+  the intent is based on the most SPECIFIC problem/system named in the
+  message, not on "what the customer is asking for" — because almost
+  every message's request is just "fix it," which doesn't help
+  distinguish intents. A fixed priority order breaks ties: Hardware >
+  Account/Billing > Music/Sync > Connectivity > Messaging > Battery/
+  Performance > Software Bug > General Inquiry (General Inquiry only
+  applies if literally no problem is described).
+- Example of the rule in action: "since I updated, iCloud photos won't
+  back up" → counted as Music/Sync (specific system named), not as a
+  generic Software Bug.
+
+6. Limitations/caveats
+------------------------
+- All the percentages above are from the two ~400-thread samples, not the
+  full AppleSupport population — used only to sanity-check that each
+  intent has ENOUGH examples to be practical, not as final population
+  statistics.
+- The keyword-based method used to check these counts actually failed to
+  find most examples of "General/Pre-Purchase Inquiry" (found ~4 by
+  keyword search vs. ~10 found by manually reading the same sample in Step
+  3A) — so that intent will need to be sampled by hand later, not by
+  keyword filtering.
+- Hardware/Repair/Warranty and Messaging/Communication are the two
+  thinnest, most fragile intents (their counts nearly halved or shifted
+  noticeably between the two samples) — may need a bigger volume check
+  before finalizing how many golden-set examples to allocate to them.
+- Because the "I" bug got folded into Software/App Bug Report, that
+  intent's overall reply-quality numbers will look artificially good later
+  — propped up by one very well-templated historical bug. This needs to be
+  called out explicitly in the "what's misleading about my headline
+  number" section of the final report (a later step).
+- No golden evaluation set has been built yet — this is just the taxonomy
+  design, not labeled data.
+
+7. How I would explain this to an evaluator (verbal)
+--------------------------------------------------------
+"I ended up with 8 intents, built from patterns that showed up consistently
+across two independent samples, not invented from scratch. The trickiest
+decision was the 'I' autocorrect bug — it's huge and has by far the best
+example of a real historical fix in the whole dataset, but it's clearly
+tied to one specific iOS update from late 2017, so instead of giving it its
+own permanent category, I folded it into a broader 'Software Bug Report'
+intent. I also defined one simple rule for messages that mention multiple
+problems at once: pick whichever named system is most specific, and only
+fall back to a generic 'something's broken' label if nothing more specific
+is mentioned."
+
+
+STEP 5 — TRAINING-DATA PREPARATION
+=========================================================
+
+1. What we did
+---------------
+Built a dataset of 1,000 real AppleSupport conversation threads, with an
+empty "intent" column, ready for me to manually label using the 8 intents
+from Step 4. No labels were assigned automatically by keyword matching or
+an LLM — this step only prepares the data; the actual labeling is a manual
+task for me to do afterward.
+
+2. Why we did it
+-----------------
+A classifier needs labeled examples to learn from. Before any classifier can
+be trained (a later step), we need real, correctly-labeled AppleSupport
+conversations — and "correctly labeled" has to mean a human actually
+applied the taxonomy rules to each example, not a shortcut standing in for
+that.
+
+3. How we did it
+------------------
+Wrote scripts/prepare_intent_data.py, which reuses the same thread
+reconstruction (analyze_brands.py) and the same thread-sampling function
+(explore_applesupport.py's build_sample) used in Steps 3A/3B — just with a
+new random seed (seed=2024) so this is an independent draw, not a reuse of
+the earlier exploration samples. Sampled 1,000 AppleSupport threads (each
+with at least one real customer message and one real AppleSupport reply),
+and for each thread wrote one row to
+data/processed/intent_labeling_sample.csv containing: the thread's tweet
+IDs, thread size, the first customer message (customer_text), the full
+thread transcript for context (conversation_context), and two BLANK columns
+— intent and labeling_notes — for me to fill in by hand. Also wrote
+configs/labeling_guide.md, a condensed, practical version of the Step 4
+taxonomy rules to use while labeling row by row (the 8 intents, inclusion/
+exclusion rules, the primary-intent priority order, worked ambiguous
+examples, how to handle the "I" bug, and what to do when intent is
+genuinely unclear — label it UNCLEAR with a note, rather than forcing a
+guess).
+
+4. Important actual findings/results
+--------------------------------------
+- 1,000 rows written, one per sampled thread, each with full conversational
+  context (not just a single isolated message) so labeling can actually be
+  done accurately.
+- Thread-size distribution in this sample (SAMPLE-LEVEL, not population):
+  676 threads of size 2, 97 of size 3, 128 of size 4, and a long tail down
+  to a handful of longer threads (up to one thread of size 22) — so the
+  large majority are short (2-4 message) exchanges, consistent with what
+  Steps 3A/3B already found about AppleSupport conversation depth.
+- The intent column is empty for all 1,000 rows right now — that is the
+  correct, expected state at the end of this step. No labeling has happened
+  yet.
+
+5. Technical decisions and why we made them
+-----------------------------------------------
+- Why keyword-based automatic labels are NOT acceptable as final ground
+  truth: Steps 3A/3B already showed that simple keyword rules leave a huge
+  "other/uncategorized" residual (over half of messages, when checked
+  earlier) and can't reliably catch phrasing-variable intents like General/
+  Pre-Purchase Inquiry. A classifier trained on keyword-derived "labels"
+  would just be learning to reproduce those same keyword rules, not
+  learning to actually classify intent — it would be circular, not a real
+  ground truth.
+- Why one row = one THREAD (not one raw tweet): a single customer tweet is
+  often ambiguous on its own (e.g. "yes" or "iPhone 6" as a reply to a
+  clarifying question) — the intent is usually only clear from the full
+  back-and-forth, so each labeled example includes the whole conversation,
+  not just an isolated line of text.
+- Used a new random seed (2024) instead of reusing the Step 3A/3B samples,
+  so this labeling set is a fresh, independent draw from the AppleSupport
+  thread pool, not the same 800 threads already read during exploration.
+- Did not touch .gitignore this step. data/processed/* is currently
+  blanket-ignored by Git (set up in Step 1), which was correct for the
+  Step 3A/3B exploration samples (pure intermediate artifacts) but is a
+  problem for THIS file specifically: once hand-labeled, it becomes real
+  ground-truth training data that should eventually be committed, not
+  thrown away. Flagged as something to fix (a .gitignore exception, or
+  moving the labeled file elsewhere) before that later commit happens —
+  deliberately not changed in this step since it makes no Git commits or
+  repo-structure changes.
+
+6. Limitations/caveats
+------------------------
+- 1,000 threads is a practical labeling size, not a statistically chosen
+  one — it's within the assignment's suggested 800-1,200 range for this
+  step, decided for feasibility of manual labeling, not derived from a
+  power calculation.
+- Per-intent counts in this set are unknown until labeling is actually
+  done — Steps 3A/3B's approximate keyword-based percentages give a rough
+  expectation (e.g. Battery & Performance and Software/App Bug Report will
+  likely be the largest groups, Hardware/Repair/Warranty and Messaging/
+  Communication the smallest), but the real distribution will only be known
+  after manual labeling.
+- Conversation context is truncated to the first 10 messages and each
+  message to 300 characters for readability in a CSV — the handful of very
+  long threads (up to size 22 in this sample) will lose some tail content,
+  flagged in the row itself ("[thread truncated]").
+- This dataset is NOT the same thing as the 150-250 example golden
+  evaluation set the assignment separately requires. This is a larger
+  (~1,000-example) dataset meant to train (and validate/test) the intent
+  classifier itself — later it will be split into train/validation/test
+  subsets (e.g. most of it for training, a held-out slice for validation
+  during development). The golden set is a smaller, separately-sampled set
+  used only at the end to evaluate the WHOLE agent (classification +
+  reply + auto-handle/escalate decision) end-to-end, and per the
+  assignment it must be built and evaluated independently of what's used to
+  train/tune the classifier — the two must not overlap in purpose, even if
+  some individual threads happen to be shared between them by chance.
+
+7. How I would explain this to an evaluator (verbal)
+--------------------------------------------------------
+"Before training any classifier, I needed real labeled data, not
+keyword-guessed labels — Step 3B already showed keyword matching leaves
+over half of messages uncategorized, so it can't be trusted as ground
+truth. I sampled 1,000 AppleSupport conversation threads with a fresh
+random seed, kept full conversation context for each one so the intent is
+actually determinable, and left the label column empty for me to fill in
+by hand using a labeling guide I wrote from the Step 4 taxonomy rules. This
+is deliberately a separate, larger dataset from the 150-250-example golden
+evaluation set Hiver asks for — this one trains the classifier, the golden
+set independently evaluates the whole agent afterward."
+
+
+STEP 6 — TRAINING DATA PREPARATION
+=========================================================
+
+What we did: Picked a smaller, reproducible subset (450 of the 1,000 Step 5
+examples) to actually hand-label first, stratified by thread length
+(short/medium/long) and a rough topic bucket so the subset stays diverse
+instead of being 450 random rows that might skew toward one theme.
+
+Why: Labeling all 1,000 by hand isn't necessary to get started, and 450 is
+a more practical first batch. The topic bucket used for stratification is
+the same rough keyword heuristic flagged as unreliable in Step 3B — used
+here only to spread the sample, never written as a label.
+
+Key result: data/processed/intent_training_sample.csv, 450 rows, exactly 4
+columns (tweet_id, conversation_context, intent, labeling_notes), intent
+and labeling_notes both empty for all 450 rows — no labels assigned.
+
+Interview explanation: "I didn't need to hand-label all 1,000 examples to
+start, so I picked a stratified 450-row subset — spread across short/
+medium/long conversations and rough topic areas — using a fixed seed, and
+left the label column empty for me to fill in by hand."
+
+
+STEP 7 — MANUAL LABELING TOOL
+=========================================================
+
+What we did: Built an interactive command-line tool
+(scripts/label_training_data.py) that shows me one conversation at a time
+from the 450-row Step 6 file and lets me type in the intent myself. It
+saves progress to disk after every single label and can resume later.
+
+Why: Labeling has to be a real human decision, not automated — no LLM, no
+keyword rule assigns any label. The tool just makes doing that by hand
+faster and safer (no lost work if I stop partway through).
+
+Key result: scripts/label_training_data.py created and smoke-tested (quit
+immediately without labeling anything, to confirm it runs correctly).
+data/processed/intent_training_sample_labeled.csv now exists with the same
+450 rows, 0 labeled so far — labeling itself hasn't started yet.
+
+Interview explanation: "I wrote a small CLI tool that shows me each
+conversation and lets me type 1-8 for the intent, 'u' for unclear, or 'q'
+to save and quit — it saves after every single entry so I never lose
+progress, but every label still comes from me reading the conversation,
+not from any automated rule."
+
+
+STEP 8 — AUTOMATIC TRAINING LABELS (NOT the golden set)
+=========================================================
+
+What we did: Instead of hand-labeling all 450 rows with the Step 7 tool, we
+wrote scripts/auto_label_training_data.py, a deterministic rule-based
+labeler (regex rules derived from configs/intent_taxonomy.md and
+labeling_guide.md, no LLM) that assigned all 450 rows one of the 8 intents
+or UNCLEAR, to move faster into model training.
+
+Why: Manual labeling of 450 examples takes real time; this trades some
+label quality for speed on the TRAINING set only. This is explicitly a
+different decision from Steps 5-7, where keyword labeling was ruled out as
+ground truth — here it's accepted as a known-approximate "weak label" for
+training, not as truth.
+
+Key result: data/processed/intent_training_sample_labeled.csv, 450/450
+labeled. Distribution: Software/App Bug Report 162 (36.0%), Battery &
+Performance 91 (20.2%), UNCLEAR 116 (25.8%), Account/Billing 23 (5.1%),
+Connectivity 20 (4.4%), Music/Sync & Data Loss 16 (3.6%), Hardware/Repair
+15 (3.3%), Messaging 7 (1.6%), General/Pre-Purchase Inquiry 0 (0.0%). While
+building the rules, found and fixed 3 real false-positive patterns (e.g.
+"I purchased my iPhone" wrongly matching a billing intent) by manually
+checking example rows against their full text — a concrete illustration of
+why keyword rules are fragile.
+
+IMPORTANT: these 450 labels are automatically assigned, NOT the 150-250
+hand-labeled golden evaluation set Hiver requires. The golden set must
+still be built and labeled independently, by a human, later.
+
+Interview explanation: "For the 450-example training set specifically, I
+switched from manual to rule-based automatic labeling to move faster — it's
+explainable and traceable to the taxonomy, but it's a weak label, not
+ground truth, and it's completely separate from the hand-labeled golden
+evaluation set the assignment requires."
+
+
+STEP 9 — LLM-ASSISTED SILVER LABELS (still NOT the golden set)
+=========================================================
+
+What we did: Reclassified all 450 rows using an LLM reading the full
+conversation each time (not keywords), via scripts/refine_training_labels.py,
+producing data/processed/intent_training_sample_silver.csv (tweet_id,
+conversation_context, intent, confidence, labeling_reason).
+
+Why: Step 8's rule-based labels were too noisy — 25.8% UNCLEAR and 0
+examples of General/Pre-Purchase Inquiry. An LLM reading full context
+handles ambiguity and rare intents far better than keyword rules. (No LLM
+API key was configured in this environment, so the classification itself
+was done by Claude directly, in the same session, using the taxonomy rules
+as the prompt — documented in the script, not hidden.)
+
+Key result: UNCLEAR dropped from 116 (25.8%) to 15 (3.3%); General/
+Pre-Purchase Inquiry went from 0 to 22 (4.9%); 201/450 (44.7%) labels
+changed from Step 8. New distribution: Software/App Bug Report 189 (42.0%),
+Battery & Performance 109 (24.2%), Account/Billing 29, Music/Sync 28,
+Hardware/Repair 27, Connectivity 22, General/Pre-Purchase 22, UNCLEAR 15,
+Messaging 9.
+
+IMPORTANT: these are LLM-ASSISTED SILVER LABELS, not human-labeled, and NOT
+the 150-250-example hand-labeled golden evaluation set Hiver requires.
+
+Interview explanation: "The rule-based labels from Step 8 were too noisy —
+a quarter of everything came out UNCLEAR. I had an LLM re-read each full
+conversation against the same taxonomy rules, which fixed most of that,
+but I'm still calling these silver labels, not ground truth — the actual
+gold evaluation set still needs to be hand-labeled separately."
