@@ -772,3 +772,30 @@ a quarter of everything came out UNCLEAR. I had an LLM re-read each full
 conversation against the same taxonomy rules, which fixed most of that,
 but I'm still calling these silver labels, not ground truth — the actual
 gold evaluation set still needs to be hand-labeled separately."
+
+
+STEP 10 — FIRST INTENT CLASSIFIER (baseline)
+=========================================================
+
+What we did: Trained a TF-IDF + Logistic Regression classifier (plus a
+majority-class baseline) on the 450 Step 9 silver labels, split 70/15/15
+train/validation/test (stratified). Excluded the 15 UNCLEAR rows first
+(not a real taxonomy intent). Saved the model and full metrics to
+data/processed/.
+
+Why: Needed a simple, honest first baseline before any tuning or the real
+evaluation — comparing against a trivial majority-class baseline shows
+whether the classifier is actually learning anything.
+
+Key result (test set, n=66): majority baseline accuracy 0.439 / macro F1
+0.076; TF-IDF+LogReg accuracy 0.636 / macro F1 0.376 / weighted F1 0.616.
+Clear lift over the baseline overall, but per-class results are uneven —
+Battery & Performance and Software/App Bug Report (the two largest classes)
+do well; several small classes (Apple Music/Sync, General/Pre-Purchase
+Inquiry, Messaging) scored 0 recall on this small test set.
+
+Interview explanation: "My first classifier beats a majority-class baseline
+by a wide margin on accuracy and macro F1, but macro F1 is still low
+because several minority classes have too few test examples (as few as 1)
+to evaluate reliably — that's expected for a 450-example first pass, not a
+final result, and it's still trained on silver labels, not the gold set."

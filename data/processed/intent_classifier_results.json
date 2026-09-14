@@ -1,0 +1,351 @@
+{
+  "note": "Trained on Step 9 LLM-assisted SILVER labels, NOT the Hiver golden evaluation set. UNCLEAR rows excluded (not a real taxonomy intent).",
+  "labels": [
+    "Account, Purchases & Billing",
+    "Apple Music / iCloud Sync & Data Loss",
+    "Battery & Performance",
+    "Connectivity",
+    "General / Pre-Purchase Inquiry",
+    "Hardware, Repair & Warranty",
+    "Messaging & Communication",
+    "Software / App Bug Report"
+  ],
+  "excluded_unclear_rows": 15,
+  "split_sizes": {
+    "train": 304,
+    "validation": 65,
+    "test": 66
+  },
+  "class_distribution": {
+    "train": {
+      "Account, Purchases & Billing": 20,
+      "Apple Music / iCloud Sync & Data Loss": 20,
+      "Battery & Performance": 76,
+      "Connectivity": 15,
+      "General / Pre-Purchase Inquiry": 16,
+      "Hardware, Repair & Warranty": 19,
+      "Messaging & Communication": 6,
+      "Software / App Bug Report": 132
+    },
+    "validation": {
+      "Account, Purchases & Billing": 4,
+      "Apple Music / iCloud Sync & Data Loss": 4,
+      "Battery & Performance": 16,
+      "Connectivity": 4,
+      "General / Pre-Purchase Inquiry": 3,
+      "Hardware, Repair & Warranty": 4,
+      "Messaging & Communication": 2,
+      "Software / App Bug Report": 28
+    },
+    "test": {
+      "Account, Purchases & Billing": 5,
+      "Apple Music / iCloud Sync & Data Loss": 4,
+      "Battery & Performance": 17,
+      "Connectivity": 3,
+      "General / Pre-Purchase Inquiry": 3,
+      "Hardware, Repair & Warranty": 4,
+      "Messaging & Communication": 1,
+      "Software / App Bug Report": 29
+    }
+  },
+  "majority_baseline": {
+    "accuracy": 0.4393939393939394,
+    "macro_f1": 0.07631578947368421,
+    "weighted_f1": 0.2682615629984051,
+    "per_class": {
+      "Account, Purchases & Billing": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 5.0
+      },
+      "Apple Music / iCloud Sync & Data Loss": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 4.0
+      },
+      "Battery & Performance": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 17.0
+      },
+      "Connectivity": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      },
+      "General / Pre-Purchase Inquiry": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      },
+      "Hardware, Repair & Warranty": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 4.0
+      },
+      "Messaging & Communication": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "Software / App Bug Report": {
+        "precision": 0.4393939393939394,
+        "recall": 1.0,
+        "f1-score": 0.6105263157894737,
+        "support": 29.0
+      },
+      "accuracy": 0.4393939393939394,
+      "macro avg": {
+        "precision": 0.054924242424242424,
+        "recall": 0.125,
+        "f1-score": 0.07631578947368421,
+        "support": 66.0
+      },
+      "weighted avg": {
+        "precision": 0.19306703397612487,
+        "recall": 0.4393939393939394,
+        "f1-score": 0.2682615629984051,
+        "support": 66.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        17
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        29
+      ]
+    ]
+  },
+  "tfidf_logreg": {
+    "accuracy": 0.6363636363636364,
+    "macro_f1": 0.3759303542526134,
+    "weighted_f1": 0.6155288786518023,
+    "per_class": {
+      "Account, Purchases & Billing": {
+        "precision": 0.5,
+        "recall": 0.8,
+        "f1-score": 0.6153846153846154,
+        "support": 5.0
+      },
+      "Apple Music / iCloud Sync & Data Loss": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 4.0
+      },
+      "Battery & Performance": {
+        "precision": 0.6538461538461539,
+        "recall": 1.0,
+        "f1-score": 0.7906976744186046,
+        "support": 17.0
+      },
+      "Connectivity": {
+        "precision": 0.6666666666666666,
+        "recall": 0.6666666666666666,
+        "f1-score": 0.6666666666666666,
+        "support": 3.0
+      },
+      "General / Pre-Purchase Inquiry": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      },
+      "Hardware, Repair & Warranty": {
+        "precision": 0.16666666666666666,
+        "recall": 0.25,
+        "f1-score": 0.2,
+        "support": 4.0
+      },
+      "Messaging & Communication": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "Software / App Bug Report": {
+        "precision": 0.9,
+        "recall": 0.6206896551724138,
+        "f1-score": 0.7346938775510204,
+        "support": 29.0
+      },
+      "accuracy": 0.6363636363636364,
+      "macro avg": {
+        "precision": 0.3608974358974359,
+        "recall": 0.41716954022988506,
+        "f1-score": 0.3759303542526134,
+        "support": 66.0
+      },
+      "weighted avg": {
+        "precision": 0.6421522921522922,
+        "recall": 0.6363636363636364,
+        "f1-score": 0.6155288786518023,
+        "support": 66.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        4,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        17,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        0,
+        2,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        5,
+        1,
+        1,
+        4,
+        0,
+        18
+      ]
+    ]
+  }
+}
