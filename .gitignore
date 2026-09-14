@@ -38,6 +38,17 @@ data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+# Reproducible evaluation artifacts (small, no raw PII/dataset content) are
+# committed so results are visible without re-running the full pipeline.
+# Everything else in data/processed/ (large intermediates, model files,
+# sampling/labeling working files) stays ignored.
+!data/processed/golden_eval.csv
+!data/processed/evaluation_results.json
+!data/processed/evaluation_predictions.csv
+!data/processed/llm_judge_results.json
+!data/processed/llm_judge_predictions.csv
+!data/processed/human_judge_results.csv
+!data/processed/intent_classifier_results.json
 evaluations/results/
 reports/generated/
 

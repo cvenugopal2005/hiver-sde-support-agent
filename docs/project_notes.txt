@@ -1262,3 +1262,43 @@ against a disposable file, not the real one, specifically so I wouldn't
 accidentally contaminate the one artifact that's supposed to prove human
 and LLM agreement with scores I generated myself. That distinction is the
 entire point of the step."
+
+
+STEP 19 — FINAL REPORT, DECISION LOG, README
+=========================================================
+
+What: Created reports/final_report.md (8 required sections: problem
+framing, what we built, results vs baselines, top 5 failure modes each
+with a real tweet_id/example/likely cause, what's misleading about the
+headline number, what I'd do with one more week, evaluation limitations,
+decision summary) using only real numbers from evaluation_results.json and
+llm_judge_results.json. Added 13 new non-obvious decisions (entries 3-15)
+to docs/decision_log.md, mined from actual project history. Rewrote
+README.md (previously all "To be completed" placeholders) with project
+overview, setup, exact run commands in order, architecture diagram, real
+results table, and reproduction instructions.
+
+Why: The assignment's deliverables require this report/log/README to
+exist and to reflect the ACTUAL project, not a polished-up version of it —
+per every constraint repeated throughout this project, the golden set's
+real composition and the never-measured human/LLM agreement had to survive
+into these final documents, not get smoothed over now that they're
+user-facing.
+
+Result: All three documents explicitly state, in multiple places, that the
+200-example golden set is 10 human-labelled + 190 LLM-generated (never
+"hand-labelled"), and that human-vs-LLM-judge agreement was never measured
+(0/30 scored). The failure-modes section cites 5 real tweet_ids with exact
+quoted text and scores, not paraphrased or invented examples. The
+"misleading headline number" section calls out 3 specific real numbers
+from this project's own results (72% AUTO-HANDLE precision masking 10%
+recall; "beats baseline" measured against a mostly-LLM reference; 4.33/5
+overall masking a 3.15 helpfulness floor).
+
+Interview explanation: "The hardest part of this step wasn't writing the
+report -- it was resisting the urge to make the project sound more
+finished than it is now that it's the user-facing deliverable. Every
+number came from a JSON file already on disk, and the two most
+uncomfortable facts about this project -- the golden set is mostly
+LLM-labeled, and I never actually validated the LLM judge against a human
+-- are stated as plainly in the README as any of the results are."
