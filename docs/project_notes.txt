@@ -937,3 +937,233 @@ curve and used 0.25 instead. Right now the system is conservative: it
 mostly escalates, and auto-handles only the lowest-risk case, a clarifying
 question — which given a still-unevaluated baseline classifier and no
 golden set yet, is the right failure mode to be biased toward."
+
+
+STEP 14 — GOLDEN EVALUATION SET (human-labeled, required)
+=========================================================
+
+What: Built scripts/prepare_golden_set.py, producing
+data/processed/golden_eval.csv: 200 AppleSupport threads, columns tweet_id,
+conversation_context, intent, expected_response_behavior,
+expected_handling, labeling_notes — the last four all written blank. The
+script recomputes the exact 1000-thread pool Step 5 sampled from (same
+seed=2024) and excludes every one of those thread roots before drawing 200
+new threads with a brand-new seed (4242). Verified programmatically: 0
+overlap between the golden thread roots and the excluded pool, 0 overlap
+between golden tweet_ids and the 450 training tweet_ids, and all four label
+columns are 100% blank (asserted in code, not just eyeballed). No LLM,
+regex rule, or trained classifier touches this file anywhere. Also created
+configs/golden_labeling_guide.md, explaining how a human labels intent
+(reuses the Step 4 taxonomy), expected_response_behavior (6 categories:
+direct_instruction, clarifying_question, dm_handoff, escalation,
+confirmation/status, unclear), expected_handling (AUTO-HANDLE/ESCALATE,
+defaulting to ESCALATE when torn), and how to handle ambiguous/multi-issue/
+non-English cases.
+
+Why: The assignment requires a real, independently human-labeled ground
+truth set to evaluate the classifier, retriever, and decision logic
+against — using the silver labels (Step 8/9) or the classifier itself to
+produce it would make any resulting evaluation circular and meaningless.
+
+Result: 200 rows written, fully blank on the four label columns, zero
+overlap with the 450-example training set or the 1000-thread pool it came
+from — confirmed by assertions in the script, not just described. No
+training or evaluation was run in this step; labeling is a manual step that
+happens next (outside this session, or as its own future step), then a
+future step builds the actual evaluation harness against it.
+
+Interview explanation: "The golden set can't just be 'more of the same
+sample' — it has to be provably disjoint from anything the classifier or
+its silver labels ever saw, or evaluating against it proves nothing. So
+instead of just picking a new random seed and hoping, I recomputed the
+exact pool the training data came from and explicitly excluded it, then
+asserted zero overlap in code before writing the file. I also made the
+labeling guide judge expected response behavior and handling from what the
+customer's message calls for, not from what AppleSupport's actual reply in
+the raw data happened to be — otherwise a human labeler could unconsciously
+copy the DM-handoff pattern into the ground truth instead of judging it."
+
+
+STEP 15 — GOLDEN SET LABELING TOOL
+=========================================================
+
+What: Built scripts/label_golden_set.py, an interactive CLI that walks
+through each unlabeled row of data/processed/golden_eval.csv, shows the
+full conversation_context, and asks 3 sequential questions per row: intent
+(1-8/u), expected_response_behavior (1-6), expected_handling (1-2), plus an
+optional free-text note. `s` skips a row entirely, `q` saves and quits.
+Saves to disk after every fully-answered row (same file, in place), so it's
+always safe to stop and resume — a row only counts as "labeled" once all 3
+fields are filled; a row abandoned partway through (e.g. intent answered,
+then quit) is discarded rather than half-saved, so it stays cleanly
+pending. `--report` prints labeled/remaining counts plus the intent,
+response-behavior, and AUTO-HANDLE/ESCALATE distributions. One deliberate
+deviation from Step 7's tool: an invalid keystroke here RE-ASKS the
+question instead of silently skipping the row — this file is the actual
+ground truth eval set, so a stray keypress shouldn't cost a label.
+
+Why: The 200-row golden set (Step 14) needs a human to actually fill it
+in, following configs/golden_labeling_guide.md, without a classifier, LLM,
+or keyword rule ever touching these labels — otherwise the eventual
+evaluation would be circular.
+
+Result: Smoke-tested end-to-end (not just import-tested): confirmed
+--report shows 0/200 labeled on a fresh file; confirmed quitting
+immediately (`q`) leaves all 200 rows blank; confirmed answering one full
+row (intent/behavior/handling/note) writes exactly that row and nothing
+else, and re-running shows 199 remaining, correctly skipping the completed
+row; confirmed `s` skips a row without writing partial data; confirmed an
+invalid keystroke re-prompts instead of consuming the row. The file was
+then restored to its original, fully-blank 200-row state (the smoke-test
+label was for testing the tool only, not a real label) — actual human
+labeling has not started.
+
+Interview explanation: "I didn't just trust the code to work — I actually
+ran it with piped input to simulate a human labeler: quit immediately,
+labeled one row fully, tried an invalid key, tried skip, then reset the
+file back to blank before finishing. The key design choice was making a
+row only count as labeled once all three fields are answered, and treating
+a partially-answered, abandoned row as still-pending rather than saving it
+half-filled — a golden set with inconsistent partial rows would be worse
+than one that's just incomplete."
+
+
+STEP 15 ADDENDUM — LLM-PROPOSED LABELS FOR HUMAN REVIEW (NOT final labels)
+=========================================================
+
+What: 9/200 golden_eval.csv rows were already genuinely hand-labeled. For
+the other 191 blank rows, generated a PROPOSED label each (proposed_intent,
+proposed_response_behavior, proposed_handling, labeling_reason) by reading
+the full conversation_context against configs/golden_labeling_guide.md and
+configs/intent_taxonomy.md, using Claude subagents as the classifier (no
+API key configured, same approach as Step 9's silver labels). Wrote these
+to a NEW file, data/processed/golden_review.csv (191 rows, proposed_* +
+blank approved_* columns) — NOT into golden_eval.csv directly. Built
+scripts/review_golden_labels.py so a human can approve (y), manually
+relabel (n), skip (s), or quit (q) each proposal; only an explicit y/n
+decision writes into golden_eval.csv's real intent/expected_response_
+behavior/expected_handling columns, always with a labeling_notes entry
+recording whether it was approved-as-proposed or manually overridden.
+
+Why: The assignment requires the golden set to be human-approved, not
+LLM-labeled — but reading 191 conversations from scratch is slow. Proposals
+speed up a human's real judgment call without letting an LLM output become
+ground truth by default: nothing reaches golden_eval.csv without someone
+explicitly pressing y or n.
+
+Result: 191/191 proposals generated, validated (unique tweet_ids, exact
+match to the 191 blank rows, all values from the exact allowed category
+lists, no missing reasons). Proposed distribution: Software/App Bug Report
+80, Battery & Performance 33, Hardware/Repair/Warranty 19, Apple Music/
+iCloud Sync 16, Account/Billing 13, UNCLEAR 9, General/Pre-Purchase 9,
+Connectivity 8, Messaging 4; AUTO-HANDLE 122 / ESCALATE 69. The review tool
+was smoke-tested (approve, skip, manual override, immediate quit) and both
+files were reset to their pre-test state afterward — zero rows in
+golden_eval.csv or golden_review.csv are actually approved yet; the 9
+original hand-labeled rows are untouched (verified: they don't appear in
+golden_review.csv at all, so the review tool has no way to touch them).
+
+Interview explanation: "I kept 'proposed' and 'approved' as physically
+separate columns in a separate file, not just a status flag, specifically
+so it's impossible to accidentally ship an LLM label as a human one — the
+real golden_eval.csv only gets written to when a human types y or n in the
+review tool, and every write records which of those happened. That
+provenance trail is the difference between 'LLM-assisted, human-approved'
+and just quietly re-doing Step 9's silver-labeling mistake on the eval set."
+
+
+STEP 15 ADDENDUM #2 — BULK AUTO-APPROVAL (explicitly NOT human review)
+=========================================================
+
+IMPORTANT — GOLDEN SET PROVENANCE: the golden set contains 10 genuinely
+human-labelled examples (9 hand-labelled before this addendum, plus 1 more
+approved individually through scripts/review_golden_labels.py) and 190
+LLM-generated labels that were bulk auto-approved WITHOUT individual human
+review, via scripts/bulk_approve_golden_labels.py, on explicit instruction
+from the project owner to finish the set quickly. It is therefore NOT a
+fully hand-labelled evaluation set and must not be represented as such in
+any report, README, or discussion of this project. (Note: the instruction
+that triggered this step said "9 human-labelled, 191 remaining" — by the
+time the script ran, the true count was 10/190, because one more row had
+been approved individually in the meantime. The counts below use the real,
+verified numbers, not the numbers as originally stated.)
+
+What: Ran scripts/bulk_approve_golden_labels.py, which copies
+proposed_intent/proposed_response_behavior/proposed_handling/labeling_reason
+from data/processed/golden_review.csv directly into golden_eval.csv's
+intent/expected_response_behavior/expected_handling/labeling_notes columns
+for every row not already individually decided (by a human label or a
+prior individual review-tool approval) — no per-row y/n prompt this time.
+
+Why: Explicitly requested to finish the 200-row set without doing the full
+manual review pass, with the explicit, upfront requirement that this
+limitation be documented honestly rather than presented as satisfying
+Hiver's hand-labelled requirement.
+
+Result: golden_eval.csv verified: exactly 200 rows, 0 blank intent/
+expected_response_behavior/expected_handling values, 0 duplicate tweet_ids,
+0 invalid category values. 10 human-labelled + 190 auto-approved = 200.
+Full distributions are in the script's printed report (re-run
+`python scripts/bulk_approve_golden_labels.py` is not idempotent-safe to
+re-run blindly since it now skips already-decided rows by design — safe to
+re-run, it will just report 0 rows written the second time).
+
+Interview explanation: "When asked to finish the golden set without manual
+review, I still made the script itself check for and skip any row a human
+had already decided — one row had, in fact, been approved for real between
+the last session and this one — so the bulk operation couldn't silently
+clobber a genuine human label. But I want to be direct about what this
+means: 190 of 200 golden labels are LLM-generated and were never reviewed
+by a person. That's a real limitation of this evaluation set, not a detail
+to gloss over, and I flagged it in the same place a hiring reviewer would
+look — this notes file — rather than only mentioning it if asked."
+
+
+STEP 16 — EVALUATION HARNESS
+=========================================================
+
+What: Built scripts/evaluate_agent.py. For all 200 golden_eval.csv rows: extracts
+the first customer message, runs it through the real pipeline (intent
+classifier -> retriever -> MOCK-mode reply generator -> AUTO-HANDLE/ESCALATE
+decision), and compares each output to the golden labels. Computes intent
+accuracy/macro-F1/weighted-F1 + per-class report + confusion matrix,
+handling accuracy + precision/recall/F1 for AUTO-HANDLE + confusion matrix,
+and response-behavior accuracy (mapping Step 11's 5-value response_type
+onto the golden set's 6-value vocabulary — documented as lossy: "escalation"
+can never be matched, since it collapsed into the same "other/unclear"
+bucket as genuinely-unclear replies). Two trivial baselines: majority
+intent (computed from TRAINING labels, not golden labels, to avoid peeking)
+and always-ESCALATE. Outputs: evaluation_results.json (all metrics + 10
+failure examples), evaluation_predictions.csv (200 rows, every prediction).
+
+Why: The assignment requires measuring the pipeline against real held-out
+examples, not just demoing it — and requires stating plainly, every time,
+that this golden set is mostly LLM-labeled (Step 15 addendum #2), not
+letting a clean-looking metrics table imply otherwise.
+
+Result: System beats both baselines but is far from strong: intent
+accuracy 0.470 vs 0.410 majority baseline (macro_f1 0.303 vs 0.065 — the
+baseline's macro_f1 is near zero because it only ever predicts one class);
+handling accuracy 0.410 vs 0.370 always-ESCALATE (AUTO-HANDLE f1 0.181 vs
+0.000 — precision 0.722 but recall only 0.103, meaning the system is very
+conservative and misses most real AUTO-HANDLE cases, consistent with the
+low-confidence-gate finding from Step 13); response-behavior accuracy
+0.335. Confusion matrix shows Software/App Bug Report and Battery &
+Performance are both over-predicted (the two largest, most generic
+classes) at the expense of smaller specific ones. 10 real failure examples
+saved and printed, unfiltered (first 10 in file order with any wrong
+prediction), including a case where "Apple Watch pairing" was misclassified
+as Account/Billing and consequently wrongly forced to ESCALATE. Every run
+prints and stores the 10-human/190-LLM golden-set warning.
+
+Interview explanation: "These numbers should be read as 'does the pipeline
+agree with a mostly-LLM-labeled reference,' not 'is the pipeline correct.'
+Still, framing it against baselines is useful: on intent, we clearly beat
+a model that just guesses the most common class, especially on macro-F1,
+which rewards not ignoring small classes. On handling, the system is
+high-precision but low-recall for AUTO-HANDLE — it's cautious to a fault
+given the classifier's low confidence — which given there's still no LLM-
+as-judge or verified ground truth, is the right place to err. The
+per-vocabulary mismatch between our response_type and the golden set's
+response-behavior labels is a real methodological seam I didn't paper
+over — 'escalation' structurally can't be predicted right now."

@@ -1,0 +1,632 @@
+{
+  "golden_set_provenance": {
+    "total_rows": 200,
+    "human_labelled_rows": 10,
+    "llm_generated_bulk_approved_rows": 190,
+    "warning": "This is NOT a fully hand-labelled ground truth evaluation set. 190/200 labels were LLM-generated and bulk auto-approved without individual human review. All metrics below measure agreement with this reference, not verified real-world correctness."
+  },
+  "method_notes": {
+    "input_text": "first CUSTOMER message extracted from conversation_context, not the full transcript",
+    "reply_mode": "mock (no LLM API key configured; LLM_PROVIDER cleared before running)",
+    "response_behavior_mapping": {
+      "direct instruction/link": "direct_instruction",
+      "clarifying question": "clarifying_question",
+      "DM handoff": "dm_handoff",
+      "confirmation/status": "confirmation/status",
+      "other/unclear": "unclear"
+    },
+    "response_behavior_mapping_limitation": "Step 11's 'other/unclear' response_type merges what were originally an escalation referral and a genuinely unclear reply into one bucket, mapped here to 'unclear' -- golden rows labeled 'escalation' can never be matched."
+  },
+  "majority_intent_baseline_value": "Software / App Bug Report",
+  "intent": {
+    "system": {
+      "accuracy": 0.47,
+      "macro_f1": 0.303257256881109,
+      "weighted_f1": 0.44437031752741957,
+      "per_class": {
+        "Battery & Performance": {
+          "precision": 0.4791666666666667,
+          "recall": 0.696969696969697,
+          "f1-score": 0.5679012345679012,
+          "support": 33.0
+        },
+        "Connectivity": {
+          "precision": 0.25,
+          "recall": 0.25,
+          "f1-score": 0.25,
+          "support": 8.0
+        },
+        "Apple Music / iCloud Sync & Data Loss": {
+          "precision": 0.4666666666666667,
+          "recall": 0.35,
+          "f1-score": 0.4,
+          "support": 20.0
+        },
+        "Account, Purchases & Billing": {
+          "precision": 0.32,
+          "recall": 0.6153846153846154,
+          "f1-score": 0.42105263157894735,
+          "support": 13.0
+        },
+        "Hardware, Repair & Warranty": {
+          "precision": 0.3333333333333333,
+          "recall": 0.2,
+          "f1-score": 0.25,
+          "support": 20.0
+        },
+        "Messaging & Communication": {
+          "precision": 0.3333333333333333,
+          "recall": 0.2,
+          "f1-score": 0.25,
+          "support": 5.0
+        },
+        "Software / App Bug Report": {
+          "precision": 0.5833333333333334,
+          "recall": 0.5975609756097561,
+          "f1-score": 0.5903614457831325,
+          "support": 82.0
+        },
+        "General / Pre-Purchase Inquiry": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 9.0
+        },
+        "UNCLEAR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 10.0
+        },
+        "accuracy": 0.47,
+        "macro avg": {
+          "precision": 0.3073148148148148,
+          "recall": 0.3233239208848965,
+          "f1-score": 0.303257256881109,
+          "support": 200.0
+        },
+        "weighted avg": {
+          "precision": 0.4373625,
+          "recall": 0.47,
+          "f1-score": 0.44437031752741957,
+          "support": 200.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          23,
+          2,
+          0,
+          0,
+          1,
+          0,
+          6,
+          1,
+          0
+        ],
+        [
+          2,
+          2,
+          0,
+          1,
+          0,
+          0,
+          3,
+          0,
+          0
+        ],
+        [
+          5,
+          1,
+          7,
+          5,
+          0,
+          0,
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          8,
+          1,
+          0,
+          2,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          1,
+          2,
+          4,
+          0,
+          10,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        [
+          14,
+          2,
+          3,
+          6,
+          4,
+          1,
+          49,
+          3,
+          0
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          3,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2,
+          1,
+          0,
+          6,
+          1,
+          0
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "Battery & Performance",
+        "Connectivity",
+        "Apple Music / iCloud Sync & Data Loss",
+        "Account, Purchases & Billing",
+        "Hardware, Repair & Warranty",
+        "Messaging & Communication",
+        "Software / App Bug Report",
+        "General / Pre-Purchase Inquiry",
+        "UNCLEAR"
+      ]
+    },
+    "majority_baseline": {
+      "accuracy": 0.41,
+      "macro_f1": 0.06461780929866036,
+      "weighted_f1": 0.23843971631205674,
+      "per_class": {
+        "Battery & Performance": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 33.0
+        },
+        "Connectivity": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 8.0
+        },
+        "Apple Music / iCloud Sync & Data Loss": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 20.0
+        },
+        "Account, Purchases & Billing": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 13.0
+        },
+        "Hardware, Repair & Warranty": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 20.0
+        },
+        "Messaging & Communication": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 5.0
+        },
+        "Software / App Bug Report": {
+          "precision": 0.41,
+          "recall": 1.0,
+          "f1-score": 0.5815602836879432,
+          "support": 82.0
+        },
+        "General / Pre-Purchase Inquiry": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 9.0
+        },
+        "UNCLEAR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 10.0
+        },
+        "accuracy": 0.41,
+        "macro avg": {
+          "precision": 0.04555555555555555,
+          "recall": 0.1111111111111111,
+          "f1-score": 0.06461780929866036,
+          "support": 200.0
+        },
+        "weighted avg": {
+          "precision": 0.1681,
+          "recall": 0.41,
+          "f1-score": 0.23843971631205674,
+          "support": 200.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          33,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          8,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          20,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          13,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          20,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          5,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          82,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          9,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          10,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "Battery & Performance",
+        "Connectivity",
+        "Apple Music / iCloud Sync & Data Loss",
+        "Account, Purchases & Billing",
+        "Hardware, Repair & Warranty",
+        "Messaging & Communication",
+        "Software / App Bug Report",
+        "General / Pre-Purchase Inquiry",
+        "UNCLEAR"
+      ]
+    }
+  },
+  "handling": {
+    "system": {
+      "accuracy": 0.41,
+      "auto_handle_precision": 0.7222222222222222,
+      "auto_handle_recall": 0.10317460317460317,
+      "auto_handle_f1": 0.18055555555555555,
+      "confusion_matrix": [
+        [
+          13,
+          113
+        ],
+        [
+          5,
+          69
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "AUTO-HANDLE",
+        "ESCALATE"
+      ]
+    },
+    "always_escalate_baseline": {
+      "accuracy": 0.37,
+      "auto_handle_precision": 0.0,
+      "auto_handle_recall": 0.0,
+      "auto_handle_f1": 0.0,
+      "confusion_matrix": [
+        [
+          0,
+          126
+        ],
+        [
+          0,
+          74
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "AUTO-HANDLE",
+        "ESCALATE"
+      ]
+    }
+  },
+  "response_behavior": {
+    "system_accuracy": 0.335
+  },
+  "failure_examples": [
+    {
+      "tweet_id": "41547",
+      "customer_message": "@115858 You freaking suck! I just got a brand new phone under warranty because my other one was giving me issues. Now this one is giving me +",
+      "golden_intent": "Apple Music / iCloud Sync & Data Loss",
+      "predicted_intent": "Battery & Performance",
+      "intent_correct": false,
+      "golden_expected_handling": "ESCALATE",
+      "predicted_handling": "ESCALATE",
+      "handling_correct": true,
+      "handling_reason": "Classifier confidence in 'Battery & Performance' is only 0.19 (below 0.25) -- too low to trust the predicted intent for an automatic reply.",
+      "golden_expected_response_behavior": "dm_handoff",
+      "predicted_response_behavior": "direct_instruction",
+      "response_behavior_correct": false,
+      "draft_reply": "Thanks for reaching out! In similar cases we've suggested: We want to be sure that you get the help you need. Please reach out here for help with your photos: https://t.co/IBIY3vMgPj Let us know if that helps.",
+      "top_retrieval_similarity": 0.9999999999999999,
+      "majority_intent_baseline": "Software / App Bug Report",
+      "majority_intent_baseline_correct": false,
+      "always_escalate_baseline_correct": true
+    },
+    {
+      "tweet_id": "41666",
+      "customer_message": "@AppleSupport hi can someone Dm plz",
+      "golden_intent": "UNCLEAR",
+      "predicted_intent": "Hardware, Repair & Warranty",
+      "intent_correct": false,
+      "golden_expected_handling": "ESCALATE",
+      "predicted_handling": "ESCALATE",
+      "handling_correct": true,
+      "handling_reason": "Classifier confidence in 'Hardware, Repair & Warranty' is only 0.17 (below 0.25) -- too low to trust the predicted intent for an automatic reply.",
+      "golden_expected_response_behavior": "dm_handoff",
+      "predicted_response_behavior": "dm_handoff",
+      "response_behavior_correct": true,
+      "draft_reply": "Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?",
+      "top_retrieval_similarity": 1.0,
+      "majority_intent_baseline": "Software / App Bug Report",
+      "majority_intent_baseline_correct": false,
+      "always_escalate_baseline_correct": true
+    },
+    {
+      "tweet_id": "60331",
+      "customer_message": "@AppleSupport something is using my MBP webcam right now and I have no idea what. WTF do I do to see what\u2019s using it &amp; turn it off?!",
+      "golden_intent": "Software / App Bug Report",
+      "predicted_intent": "Apple Music / iCloud Sync & Data Loss",
+      "intent_correct": false,
+      "golden_expected_handling": "AUTO-HANDLE",
+      "predicted_handling": "ESCALATE",
+      "handling_correct": false,
+      "handling_reason": "Classifier confidence in 'Apple Music / iCloud Sync & Data Loss' is only 0.18 (below 0.25) -- too low to trust the predicted intent for an automatic reply.",
+      "golden_expected_response_behavior": "clarifying_question",
+      "predicted_response_behavior": "clarifying_question",
+      "response_behavior_correct": true,
+      "draft_reply": "Thanks for letting us know. We'd be happy to help. Are there any apps open in your Dock? Apps like PhotoBooth or FaceTime may be causing this. (Similar cases needed this detail before we could help further.)",
+      "top_retrieval_similarity": 1.0,
+      "majority_intent_baseline": "Software / App Bug Report",
+      "majority_intent_baseline_correct": true,
+      "always_escalate_baseline_correct": false
+    },
+    {
+      "tweet_id": "109054",
+      "customer_message": "Why is the Messenger app so glitchy on the @115858 Watch?! That is my main \u201ctext\u201d app. \ud83e\udd14\ud83d\ude2b",
+      "golden_intent": "Messaging & Communication",
+      "predicted_intent": "Software / App Bug Report",
+      "intent_correct": false,
+      "golden_expected_handling": "AUTO-HANDLE",
+      "predicted_handling": "ESCALATE",
+      "handling_correct": false,
+      "handling_reason": "Classifier confidence in 'Software / App Bug Report' is only 0.16 (below 0.25) -- too low to trust the predicted intent for an automatic reply.",
+      "golden_expected_response_behavior": "confirmation/status",
+      "predicted_response_behavior": "direct_instruction",
+      "response_behavior_correct": false,
+      "draft_reply": "Thanks for reaching out! In similar cases we've suggested: Thanks for bringing this to our attention. Have you tried restarting your Apple Watch to see if the issue persists? Let us know if that helps.",
+      "top_retrieval_similarity": 1.0,
+      "majority_intent_baseline": "Software / App Bug Report",
+      "majority_intent_baseline_correct": false,
+      "always_escalate_baseline_correct": false
+    },
+    {
+      "tweet_id": "110884",
+      "customer_message": "algu\u00e9m pode me ajudar? tenho 1,16gb de foto, mas geralmente mostra que tenho 3,33gb e n\u00e3o consigo usar outros apps por conta de falta de mem\u00f3ria \ud83e\udd26\ud83c\udffb\u200d\u2640\ufe0f ps: n\u00e3o tenho nem 1000 fotos, nem v\u00eddeos compridos. https://t.co/wTGgXutcos",
+      "golden_intent": "Apple Music / iCloud Sync & Data Loss",
+      "predicted_intent": "Connectivity",
+      "intent_correct": false,
+      "golden_expected_handling": "ESCALATE",
+      "predicted_handling": "ESCALATE",
+      "handling_correct": true,
+      "handling_reason": "Classifier confidence in 'Connectivity' is only 0.18 (below 0.25) -- too low to trust the predicted intent for an automatic reply.",
+      "golden_expected_response_behavior": "dm_handoff",
+      "predicted_response_behavior": "dm_handoff",
+      "response_behavior_correct": true,
+      "draft_reply": "Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?",
+      "top_retrieval_similarity": 1.0000000000000002,
+      "majority_intent_baseline": "Software / App Bug Report",
+      "majority_intent_baseline_correct": false,
+      "always_escalate_baseline_correct": true
+    },
+    {
+      "tweet_id": "127626",
+      "customer_message": "@AppleSupport I all of a sudden have a ton of duplicate films showing in my iTunes collection.",
+      "golden_intent": "Apple Music / iCloud Sync & Data Loss",
+      "predicted_intent": "Account, Purchases & Billing",
+      "intent_correct": false,
+      "golden_expected_handling": "AUTO-HANDLE",
+      "predicted_handling": "ESCALATE",
+      "handling_correct": false,
+      "handling_reason": "Predicted intent 'Account, Purchases & Billing' involves account/purchases/billing -- always escalated to a human regardless of evidence quality.",
+      "golden_expected_response_behavior": "direct_instruction",
+      "predicted_response_behavior": "dm_handoff",
+      "response_behavior_correct": false,
+      "draft_reply": "Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?",
+      "top_retrieval_similarity": 1.0000000000000002,
+      "majority_intent_baseline": "Software / App Bug Report",
+      "majority_intent_baseline_correct": false,
+      "always_escalate_baseline_correct": false
+    },
+    {
+      "tweet_id": "150051",
+      "customer_message": "Pairing an apple watch with a new iPhone should be seamless. It is NOT. @115858 I actually hate you right now.",
+      "golden_intent": "Apple Music / iCloud Sync & Data Loss",
+      "predicted_intent": "Account, Purchases & Billing",
+      "intent_correct": false,
+      "golden_expected_handling": "AUTO-HANDLE",
+      "predicted_handling": "ESCALATE",
+      "handling_correct": false,
+      "handling_reason": "Predicted intent 'Account, Purchases & Billing' involves account/purchases/billing -- always escalated to a human regardless of evidence quality.",
+      "golden_expected_response_behavior": "clarifying_question",
+      "predicted_response_behavior": "clarifying_question",
+      "response_behavior_correct": true,
+      "draft_reply": "Thanks for letting us know. We'd be happy to look into this. Can you provide us with what issues you're experiencing with the setup? (Similar cases needed this detail before we could help further.)",
+      "top_retrieval_similarity": 1.0,
+      "majority_intent_baseline": "Software / App Bug Report",
+      "majority_intent_baseline_correct": false,
+      "always_escalate_baseline_correct": false
+    },
+    {
+      "tweet_id": "150054",
+      "customer_message": "@115858  anyone able to help with Ipadair2 ???? Shops in manchester are shocking .... not charging and really not happy with it !!!!",
+      "golden_intent": "Hardware, Repair & Warranty",
+      "predicted_intent": "Software / App Bug Report",
+      "intent_correct": false,
+      "golden_expected_handling": "ESCALATE",
+      "predicted_handling": "ESCALATE",
+      "handling_correct": true,
+      "handling_reason": "Classifier confidence in 'Software / App Bug Report' is only 0.20 (below 0.25) -- too low to trust the predicted intent for an automatic reply.",
+      "golden_expected_response_behavior": "dm_handoff",
+      "predicted_response_behavior": "dm_handoff",
+      "response_behavior_correct": true,
+      "draft_reply": "Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?",
+      "top_retrieval_similarity": 1.0000000000000002,
+      "majority_intent_baseline": "Software / App Bug Report",
+      "majority_intent_baseline_correct": false,
+      "always_escalate_baseline_correct": true
+    },
+    {
+      "tweet_id": "151556",
+      "customer_message": "@AppleSupport why do my notifications keep getting cut off like this in iOS 11? https://t.co/0DosG3Lj1P",
+      "golden_intent": "Software / App Bug Report",
+      "predicted_intent": "Battery & Performance",
+      "intent_correct": false,
+      "golden_expected_handling": "ESCALATE",
+      "predicted_handling": "ESCALATE",
+      "handling_correct": true,
+      "handling_reason": "Classifier confidence in 'Battery & Performance' is only 0.20 (below 0.25) -- too low to trust the predicted intent for an automatic reply.",
+      "golden_expected_response_behavior": "clarifying_question",
+      "predicted_response_behavior": "clarifying_question",
+      "response_behavior_correct": true,
+      "draft_reply": "Thanks for letting us know. We'd be happy to look into what's causing your notifications to display incorrectly. Which iPhone and iOS 11 version are you using? You can see where to find that version by going to Settings &gt; General &gt; About &gt; Version. (Similar cases needed this detail before we could help further.)",
+      "top_retrieval_similarity": 1.0,
+      "majority_intent_baseline": "Software / App Bug Report",
+      "majority_intent_baseline_correct": true,
+      "always_escalate_baseline_correct": true
+    },
+    {
+      "tweet_id": "185544",
+      "customer_message": "Really sick of this shit update and autocorrecting to that weird shit. Get I\ufe0ft together @AppleSupport @115858",
+      "golden_intent": "Software / App Bug Report",
+      "predicted_intent": "Software / App Bug Report",
+      "intent_correct": true,
+      "golden_expected_handling": "AUTO-HANDLE",
+      "predicted_handling": "ESCALATE",
+      "handling_correct": false,
+      "handling_reason": "Classifier confidence in 'Software / App Bug Report' is only 0.24 (below 0.25) -- too low to trust the predicted intent for an automatic reply.",
+      "golden_expected_response_behavior": "direct_instruction",
+      "predicted_response_behavior": "dm_handoff",
+      "response_behavior_correct": false,
+      "draft_reply": "Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?",
+      "top_retrieval_similarity": 1.0,
+      "majority_intent_baseline": "Software / App Bug Report",
+      "majority_intent_baseline_correct": true,
+      "always_escalate_baseline_correct": false
+    }
+  ]
+}
