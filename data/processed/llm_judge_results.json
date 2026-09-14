@@ -1,0 +1,204 @@
+{
+  "mode": "real:claude-subagent",
+  "n_judged": 200,
+  "average_scores": {
+    "relevance": 4.245,
+    "groundedness": 4.965,
+    "helpfulness": 3.15,
+    "safety": 4.945,
+    "overall": 4.32625
+  },
+  "by_predicted_response_behavior": {
+    "clarifying_question": {
+      "relevance": 4.76,
+      "groundedness": 4.97,
+      "helpfulness": 3.62,
+      "safety": 4.94,
+      "overall": 4.57
+    },
+    "confirmation/status": {
+      "relevance": 4.0,
+      "groundedness": 4.43,
+      "helpfulness": 3.14,
+      "safety": 4.43,
+      "overall": 4.0
+    },
+    "direct_instruction": {
+      "relevance": 4.67,
+      "groundedness": 5.0,
+      "helpfulness": 3.83,
+      "safety": 4.98,
+      "overall": 4.62
+    },
+    "dm_handoff": {
+      "relevance": 3.94,
+      "groundedness": 4.98,
+      "helpfulness": 2.77,
+      "safety": 4.96,
+      "overall": 4.16
+    },
+    "unclear": {
+      "relevance": 3.67,
+      "groundedness": 5.0,
+      "helpfulness": 2.17,
+      "safety": 5.0,
+      "overall": 3.96
+    }
+  },
+  "by_predicted_handling": {
+    "AUTO-HANDLE": {
+      "relevance": 4.61,
+      "groundedness": 5.0,
+      "helpfulness": 3.72,
+      "safety": 4.94,
+      "overall": 4.57
+    },
+    "ESCALATE": {
+      "relevance": 4.21,
+      "groundedness": 4.96,
+      "helpfulness": 3.09,
+      "safety": 4.95,
+      "overall": 4.3
+    }
+  },
+  "weakest_dimension_overall": "helpfulness",
+  "low_scoring_examples_response_behavior_distribution": {
+    "dm_handoff": 103,
+    "unclear": 6,
+    "direct_instruction": 4,
+    "clarifying_question": 4,
+    "confirmation/status": 3
+  },
+  "representative_examples": [
+    {
+      "tweet_id": 916473,
+      "customer_message": "Hey, @AppleSupport what is happening? https://t.co/tRzQS4JhBV",
+      "predicted_intent": "Software / App Bug Report",
+      "draft_reply": "Thanks for reaching out! In similar cases we've suggested: We're glad to hear it fixed itself! Just reach out if you need help again and have a good one. Let us know if that helps.",
+      "predicted_response_behavior": "confirmation/status",
+      "relevance": 1,
+      "groundedness": 2,
+      "helpfulness": 1,
+      "safety": 2,
+      "overall": 1.5,
+      "reasoning": "Wrongly assumes issue self-resolved; unsupported claim, doesn't address current message."
+    },
+    {
+      "tweet_id": 1703838,
+      "customer_message": "@AppleSupport check your DM",
+      "predicted_intent": "Software / App Bug Report",
+      "draft_reply": "Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?",
+      "predicted_response_behavior": "dm_handoff",
+      "relevance": 2,
+      "groundedness": 4,
+      "helpfulness": 2,
+      "safety": 3,
+      "overall": 2.75,
+      "reasoning": "Ignores that customer said they already sent a DM; asks again, illogical."
+    },
+    {
+      "tweet_id": 453966,
+      "customer_message": "@AppleSupport can you help me ? I have sent my problem in DM",
+      "predicted_intent": "Account, Purchases & Billing",
+      "draft_reply": "Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?",
+      "predicted_response_behavior": "dm_handoff",
+      "relevance": 2,
+      "groundedness": 4,
+      "helpfulness": 2,
+      "safety": 4,
+      "overall": 3.0,
+      "reasoning": "Customer already sent a DM; reply oddly re-requests one, ignoring that context."
+    },
+    {
+      "tweet_id": 1726221,
+      "customer_message": "yo, @115858 run me my update to fix my phone.",
+      "predicted_intent": "Software / App Bug Report",
+      "draft_reply": "Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?",
+      "predicted_response_behavior": "dm_handoff",
+      "relevance": 4,
+      "groundedness": 5,
+      "helpfulness": 3,
+      "safety": 5,
+      "overall": 4.25,
+      "reasoning": "Generic DM ask matches top DM-handoff evidence."
+    },
+    {
+      "tweet_id": 1976458,
+      "customer_message": "@AppleSupport my Beats Studio Wireless ear foams are weather from gym use (from sweat). How do I go about new pieces? Thanks. https://t.co/aHvl8FSrbJ",
+      "predicted_intent": "Software / App Bug Report",
+      "draft_reply": "Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?",
+      "predicted_response_behavior": "dm_handoff",
+      "relevance": 4,
+      "groundedness": 5,
+      "helpfulness": 3,
+      "safety": 5,
+      "overall": 4.25,
+      "reasoning": "Generic DM ask for Beats replacement; safe but doesn't request country as evidence suggests."
+    },
+    {
+      "tweet_id": 2274011,
+      "customer_message": "@115858 CAN YOU PLS FIX EVERYONES PHONE IM SICK OF NOT BEING ABLE TO USE \u201cI\u201d",
+      "predicted_intent": "Software / App Bug Report",
+      "draft_reply": "Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?",
+      "predicted_response_behavior": "dm_handoff",
+      "relevance": 4,
+      "groundedness": 5,
+      "helpfulness": 3,
+      "safety": 5,
+      "overall": 4.25,
+      "reasoning": "Generic DM ask avoids wrongly assuming customer already updated, as evidence implied."
+    },
+    {
+      "tweet_id": 1695006,
+      "customer_message": "@AppleSupport I have a new iPhone 6 as well as iPad 2017 model.can I charge my iPhone with iPad charger and vice versa?",
+      "predicted_intent": "Hardware, Repair & Warranty",
+      "draft_reply": "Thanks for reaching out! In similar cases we've suggested: This article here has some great info about that. https://t.co/w7T6ugRbaM Let us know if that helps.",
+      "predicted_response_behavior": "direct_instruction",
+      "relevance": 4,
+      "groundedness": 5,
+      "helpfulness": 4,
+      "safety": 5,
+      "overall": 4.5,
+      "reasoning": "Grounded article-link response copied from exact-match evidence, on-topic."
+    },
+    {
+      "tweet_id": 2834358,
+      "customer_message": "Gmail accounts not working with macOS mail this morning. They work fine online. Anyone else seeing this? #Gmail #macOS #Sierra @133941 @AppleSupport",
+      "predicted_intent": "Software / App Bug Report",
+      "draft_reply": "Thanks for reaching out! In similar cases we've suggested: We can help look into this. Can you tell us what is happening when you try to use Gmail on your Mac? Are there other accounts on the Mac? If so, are they working as expected? Let us know if that helps.",
+      "predicted_response_behavior": "direct_instruction",
+      "relevance": 5,
+      "groundedness": 5,
+      "helpfulness": 4,
+      "safety": 5,
+      "overall": 4.75,
+      "reasoning": "Detailed grounded clarifying questions about Gmail/Mac match exact evidence."
+    },
+    {
+      "tweet_id": 2964142,
+      "customer_message": "@AppleSupport Just wondering two things:  1 - Why are movies that I *DIDN\u2019T* purchase showing up in my iTunes?  2 - Why do I now have duplicates of movies that I *DID* purchase?  Please help.",
+      "predicted_intent": "Apple Music / iCloud Sync & Data Loss",
+      "draft_reply": "Thanks for letting us know. Thanks for reaching out. We'd be happy to help. Which device are you seeing these duplicates and movies you haven't purchased? (Similar cases needed this detail before we could help further.)",
+      "predicted_response_behavior": "clarifying_question",
+      "relevance": 5,
+      "groundedness": 5,
+      "helpfulness": 4,
+      "safety": 5,
+      "overall": 4.75,
+      "reasoning": "Grounded clarifying question about duplicate/unpurchased movies matches exact evidence."
+    },
+    {
+      "tweet_id": 284064,
+      "customer_message": "@115858 @118936 @118721  I can\u2019t download apps without adding a credit card &amp; i don\u2019t have one of those !! this needs to be fixed \ud83e\udd14",
+      "predicted_intent": "Software / App Bug Report",
+      "draft_reply": "Thanks for reaching out! In similar cases we've suggested: Check out this article and how to choose None: https://t.co/Y0YoIRcZa7 Let us know if that helps.",
+      "predicted_response_behavior": "direct_instruction",
+      "relevance": 5,
+      "groundedness": 5,
+      "helpfulness": 5,
+      "safety": 5,
+      "overall": 5.0,
+      "reasoning": "Directly grounded article link addresses the credit-card-free download issue precisely."
+    }
+  ]
+}

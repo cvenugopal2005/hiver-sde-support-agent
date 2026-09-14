@@ -1,0 +1,271 @@
+tweet_id,customer_message,draft_reply,retrieved_evidence,predicted_intent,predicted_response_behavior,predicted_handling,llm_relevance,llm_groundedness,llm_helpfulness,llm_safety,human_relevance,human_groundedness,human_helpfulness,human_safety,human_notes
+1220498,@AppleSupport I have not received verification that you received my broken 6S and removed the hold you have on my account pending your receipt of my unusable broken iphone.,Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?,"[1] similarity=1.000 response_type=DM handoff
+    historical customer message: @AppleSupport I have not received verification that you received my broken 6S and removed the hold you have on my account pending your receipt of my unusable broken iphone.
+    historical AppleSupport reply: @173692 Please send us a DM and we will look into this together. https://t.co/GDrqU22YpT
+[2] similarity=0.321 response_type=clarifying question
+    historical customer message: Dear @115858, how does one schedule an appointment for a unusable broken phone when they're required to enter a code that has been sent to said unusable broken phone? Asking for myself.
+    historical AppleSupport reply: @774556 We are here to help whenever possible. What specifically is broken with your iPhone?
+[3] similarity=0.248 response_type=DM handoff
+    historical customer message: I need @AppleSupport to save me tomorrow and get some life out of my broken iPhone!
+    historical AppleSupport reply: @776015 We can help with your iPhone. Meet us in DM with details of what's happening. https://t.co/GDrqU22YpT","Account, Purchases & Billing",dm_handoff,ESCALATE,4,5,3,5,,,,,
+588045,@AppleSupport why does everything have to be so complicated with Apple photos? Trying to make a Photobook and all my files are .heic and .mov. I just want a jpg...,Thanks for reaching out! In similar cases we've suggested: We recommend reaching out to our Photos experts for help with your photo book. You can reach out to them here: https://t.co/IBIY3vMgPj Let us know if that helps.,"[1] similarity=1.000 response_type=direct instruction/link
+    historical customer message: @AppleSupport why does everything have to be so complicated with Apple photos? Trying to make a Photobook and all my files are .heic and .mov. I just want a jpg...
+    historical AppleSupport reply: @258957 We recommend reaching out to our Photos experts for help with your photo book. You can reach out to them here: https://t.co/IBIY3vMgPj
+[2] similarity=0.223 response_type=DM handoff
+    historical customer message: Any idea on how I can just pull out all the jpg files from all these containing folders at once? @AppleSupport ""kind:jpg"" doesn't work btw https://t.co/XCpCpu97n9
+    historical AppleSupport reply: @565111 We are happy help if you're still experiencing this issue. Send us a DM if you have any additional questions. https://t.co/GDrqU2kzhr
+[3] similarity=0.212 response_type=DM handoff
+    historical customer message: @AppleSupport Hey, how do I turn off heic files? I can't email my photos to anyone anymore because they are no longer jpg. Really annoying and inconvenient. Hate this new update and now hate iPhones.
+    historical AppleSupport reply: @283999 Hey there, thanks for reaching out to us. Please send us a DM, and we'll take a look into this with you. https://t.co/GDrqU22YpT",Apple Music / iCloud Sync & Data Loss,direct_instruction,ESCALATE,5,5,4,5,,,,,
+2747364,"@AppleSupport Since updating my Iphone 6S + has stopped backing up my photos to Icloud. It is enabled in settings, have done cold boot but still not working. Please help as I use this a lot.","Thanks for letting us know. We're here to help! Let's see what we can do about getting your device to back up your photos to iCloud. Since experiencing this issue, have you check to see how much storage space is available in iCloud? To find out, navigate to: Settings &gt; [name] &gt; iCloud. (Similar cases needed this detail before we could help further.)","[1] similarity=1.000 response_type=clarifying question
+    historical customer message: @AppleSupport Since updating my Iphone 6S + has stopped backing up my photos to Icloud. It is enabled in settings, have done cold boot but still not working. Please help as I use this a lot.
+    historical AppleSupport reply: @769299 We're here to help! Let's see what we can do about getting your device to back up your photos to iCloud. Since experiencing this issue, have you check to see how much storage space is available in iCloud? To find out, navigate to: Settings &gt; [name] &gt; iCloud.
+[2] similarity=0.248 response_type=DM handoff
+    historical customer message: @115858 How come my iphone 6s stopped working after the new phone came out?? #insidejob
+    historical AppleSupport reply: @287994 We'd be happy to help! What's happening with your iPhone 6S? You can also DM us if you'd like: https://t.co/GDrqU22YpT
+[3] similarity=0.242 response_type=clarifying question
+    historical customer message: @AppleSupport why my photos not backing up ?
+    historical AppleSupport reply: @326973 We know how important it is to back up your photos. We'll help. Which device are you using? Do you usually back up to iCloud?",Apple Music / iCloud Sync & Data Loss,clarifying_question,AUTO-HANDLE,5,5,4,5,,,,,
+2516003,#Apple #iPhone #iOSBugs #iOS11 .1 https://t.co/LbWoPmjMro,Thanks for reaching out! In similar cases we've suggested: We're here for you. Does this persist after closing the app and restarting your iPhone? Let us know once you get the chance to test using those steps. Let us know if that helps.,"[1] similarity=1.000 response_type=direct instruction/link
+    historical customer message: #Apple #iPhone #iOSBugs #iOS11 .1 https://t.co/LbWoPmjMro
+    historical AppleSupport reply: @128696 We're here for you. Does this persist after closing the app and restarting your iPhone? Let us know once you get the chance to test using those steps.
+[2] similarity=0.442 response_type=DM handoff
+    historical customer message: Anyone having issues with the lockscreen on 11.1.2? I got an iPhone 7 and the lockscreen doesnt show anything I cant do nothing on it. @115858 @116333 #ios #apple #iphone #iosbugs #iosbug #fixthisshitapple
+    historical AppleSupport reply: @253585 Hey there. Let us help you out with your iPhone 7. Send us a DM and we'll meet you there. https://t.co/GDrqU22YpT
+[3] similarity=0.377 response_type=DM handoff
+    historical customer message: Who else has this iPhone H(I️)V? @AppleSupport  what’s going on? #wheresmyeye #iosbugs
+    historical AppleSupport reply: @591268 We're happy to look into this with you. Which software version is installed?  Send us a DM and we'll get started. https://t.co/GDrqU22YpT",General / Pre-Purchase Inquiry,direct_instruction,ESCALATE,3,5,3,5,,,,,
+2093783,@AppleSupport yea why am I️ paying 67989 for a phone that GLITCHES WHEN I️ USE THE I️ AND WHY HAVENT YOU FIXED IT YET?!,Thanks for reaching out! In similar cases we've suggested: Here’s what you can do to work around the issue until it’s fixed in a future software update: https://t.co/xXaXeeSRt9 Let us know if that helps.,"[1] similarity=1.000 response_type=direct instruction/link
+    historical customer message: @AppleSupport yea why am I️ paying 67989 for a phone that GLITCHES WHEN I️ USE THE I️ AND WHY HAVENT YOU FIXED IT YET?!
+    historical AppleSupport reply: @618654 Here’s what you can do to work around the issue until it’s fixed in a future software update: https://t.co/xXaXeeSRt9
+[2] similarity=0.489 response_type=direct instruction/link
+    historical customer message: @AppleSupport yea...soooo I️ can’t do this...please help
+    historical AppleSupport reply: @435251  Check out our article https://t.co/xU1AGHStV6 if you're seeing this issue, let us know if we can still help.
+[3] similarity=0.486 response_type=direct instruction/link
+    historical customer message: @AppleSupport yea, I️ can’t type the letter I️. What’s up with that?
+    historical AppleSupport reply: @510088 Here’s what you can do to work around the issue until it’s fixed in a future software update: https://t.co/xXaXeeSRt9",Battery & Performance,direct_instruction,ESCALATE,5,5,4,5,,,,,
+845809,"Hey @AppleSupport , my locked screen i8plus cant access the camera by swipe left on ios 11.0.3.. What happen..?","Thanks for reaching out! In similar cases we've suggested: Let’s investigate this together. To start, tell us what happens when you swipe left on the Lock Screen. Let us know if that helps.","[1] similarity=1.000 response_type=confirmation/status
+    historical customer message: Hey @AppleSupport , my locked screen i8plus cant access the camera by swipe left on ios 11.0.3.. What happen..?
+    historical AppleSupport reply: @321035 Let’s investigate this together. To start, tell us what happens when you swipe left on the Lock Screen.
+[2] similarity=0.357 response_type=DM handoff
+    historical customer message: @AppleSupport Hi, since 11.1.1 on my SE, I cannot swipe left on the lock screen to get to camera if there's a screen full of notifications. I either have to clear them or access camera by the icon itself.
+    historical AppleSupport reply: @708485 Thanks for reaching out! Let's see what's going on. Have you tried to restart your phone since this started happening? Reply in DM. https://t.co/GDrqU22YpT
+[3] similarity=0.350 response_type=DM handoff
+    historical customer message: @AppleSupport I HAVE BEEN LOCKED OUT!!!!
+    historical AppleSupport reply: @698747 We've received your DM, you can expect a response from us there shortly.",Battery & Performance,confirmation/status,ESCALATE,5,5,4,5,,,,,
+2512268,.@AppleSupport updated to ios 11.1.1 now my Bluetooth speakers just a pair of expensive magnets!,"Thanks for reaching out! In similar cases we've suggested: Let's help get this resolved and you connected.  To better assist, what currently happens when you attempt to connect via Bluetooth? Let us know if that helps.","[1] similarity=1.000 response_type=confirmation/status
+    historical customer message: .@AppleSupport updated to ios 11.1.1 now my Bluetooth speakers just a pair of expensive magnets!
+    historical AppleSupport reply: @715993 Let's help get this resolved and you connected.  To better assist, what currently happens when you attempt to connect via Bluetooth?
+[2] similarity=0.436 response_type=DM handoff
+    historical customer message: My Apple Watch is messing with my Bluetooth speakers! @115948 @AppleSupport
+    historical AppleSupport reply: @524825 Let’s figure this out. Use the link below to DM us some details about the issue you’re noticing, and we’ll go from there. https://t.co/GDrqU22YpT
+[3] similarity=0.381 response_type=DM handoff
+    historical customer message: @AppleSupport I updated ios to 11.0.2 and this is...what?! https://t.co/jPX8seMpCn
+    historical AppleSupport reply: @174548 That's not expected! What kind of iPhone do you have? Does restarting help? DM us, and we'll find a solution together. https://t.co/GDrqU22YpT",Connectivity,confirmation/status,ESCALATE,5,5,3,5,,,,,
+1016765,@AppleSupport why my games not working on my phone ? 😑🤔,Thanks for letting us know. We can help out. What occurs when attempting to launch/play games on your iPhone? (Similar cases needed this detail before we could help further.),"[1] similarity=1.000 response_type=clarifying question
+    historical customer message: @AppleSupport why my games not working on my phone ? 😑🤔
+    historical AppleSupport reply: @360569 We can help out. What occurs when attempting to launch/play games on your iPhone?
+[2] similarity=0.415 response_type=direct instruction/link
+    historical customer message: @AppleSupport please help. “I️” isn’t working on my phone! 🤦🏻‍♀️
+    historical AppleSupport reply: @516053 Here’s what you can do to work around the issue until it’s fixed in a future software update: https://t.co/xXaXeeSRt9
+[3] similarity=0.389 response_type=clarifying question
+    historical customer message: @115858  Why is facetime not working for me on my phone?????????
+    historical AppleSupport reply: @456919 That's a good question. We'll be happy to assist. What exactly are you seeing happen?",Battery & Performance,clarifying_question,ESCALATE,5,5,4,5,,,,,
+1328645,@AppleSupport Do you guys really sabotage later models of phones to encourage new sales? I'd hate to think my phone slowing was planned.,Thanks for letting us know. We'd be happy to look into what's causing the slowness. That's never the experience we want for you. What's going on? (Similar cases needed this detail before we could help further.),"[1] similarity=1.000 response_type=clarifying question
+    historical customer message: @AppleSupport Do you guys really sabotage later models of phones to encourage new sales? I'd hate to think my phone slowing was planned.
+    historical AppleSupport reply: @429978 We'd be happy to look into what's causing the slowness. That's never the experience we want for you. What's going on?
+[2] similarity=0.243 response_type=DM handoff
+    historical customer message: @AppleSupport you guys really need to fix this bug!
+    historical AppleSupport reply: @365334 Thanks for contacting us. We'll be glad to look into this with you. Please DM us. https://t.co/GDrqU22YpT
+[3] similarity=0.187 response_type=direct instruction/link
+    historical customer message: So when is @115858 releasing the update to fix our phones because I’m getting tired of this: “I️” and my phone slowing down.
+    historical AppleSupport reply: @520049 Here’s what you can do to work around the issue until it’s fixed in a future software update: https://t.co/xXaXeeSRt9",General / Pre-Purchase Inquiry,clarifying_question,ESCALATE,5,5,4,5,,,,,
+762520,@AppleSupport y’all do better w/ y’all Apple support ppl. They some racist mfs. 💯‼️,Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?,"[1] similarity=1.000 response_type=DM handoff
+    historical customer message: @AppleSupport y’all do better w/ y’all Apple support ppl. They some racist mfs. 💯‼️
+    historical AppleSupport reply: @302187 Please send us a DM and let us know some more details about your experience. https://t.co/GDrqU22YpT
+[2] similarity=0.275 response_type=direct instruction/link
+    historical customer message: @AppleSupport y’all better fix this I️ bullshit.
+    historical AppleSupport reply: @515192 Here’s what you can do to work around the issue until it’s fixed in a future software update: https://t.co/xXaXeeSRt9
+[3] similarity=0.238 response_type=DM handoff
+    historical customer message: @AppleSupport better get there shit together with this I️ problem!!
+    historical AppleSupport reply: @597538 We would like to offer some guidance with this. Please review: https://t.co/xXaXeeSRt9 DM us if you have any questions. https://t.co/GDrqU22YpT","Account, Purchases & Billing",dm_handoff,ESCALATE,4,5,2,5,,,,,
+2647184,@AppleSupport WHY ARE ALL OF MY PICTURES GONE,Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?,"[1] similarity=1.000 response_type=DM handoff
+    historical customer message: @AppleSupport all my pictures are gone, can i get them back?
+    historical AppleSupport reply: @584534 We understand how precious your pictures are. Join us in DM and we'll explore ways to provide you assistance. https://t.co/GDrqU22YpT
+[2] similarity=1.000 response_type=DM handoff
+    historical customer message: @AppleSupport WHY ARE ALL OF MY PICTURES GONE
+    historical AppleSupport reply: @746862 We've received your DM and will continue our conversation there.
+[3] similarity=0.837 response_type=DM handoff
+    historical customer message: @AppleSupport all my pictures are gone 😭😭😭 please help me get them back.
+    historical AppleSupport reply: @451514 We will do all we can to help you. DM us which device and OS you're having this issue on, and we'll continue support there. https://t.co/GDrqU22YpT",Apple Music / iCloud Sync & Data Loss,dm_handoff,ESCALATE,5,5,3,5,,,,,
+2361751,". @AppleSupport this has become really annoying, my iPhone keeps asking my home network wifi password, when I haven’t changed it. This issue appeared after updating to iOS 11, clean update through iTunes #Applefail https://t.co/CzAN5TBuuT",Thanks for reaching out! In similar cases we've suggested: We're happy to assist. Which iOS 11 version are you currently running? Go to Settings &gt; General &gt; About for the version. Let us know if that helps.,"[1] similarity=1.000 response_type=direct instruction/link
+    historical customer message: . @AppleSupport this has become really annoying, my iPhone keeps asking my home network wifi password, when I haven’t changed it. This issue appeared after updating to iOS 11, clean update through iTunes #Applefail https://t.co/CzAN5TBuuT
+    historical AppleSupport reply: @667357 We're happy to assist. Which iOS 11 version are you currently running? Go to Settings &gt; General &gt; About for the version.
+[2] similarity=0.268 response_type=direct instruction/link
+    historical customer message: @115858 fails...#applefail https://t.co/uNBpsvkrQt
+    historical AppleSupport reply: @646684 We recently released an iOS update, 11.1.1, that contains a fix for autocorrect issues. Let’s be sure to back up your device prior to updating. How to back up: https://t.co/4f8hwT5to6
+[3] similarity=0.222 response_type=DM handoff
+    historical customer message: Hey @AppleSupport this is really annoying. https://t.co/LF96QPJL9o
+    historical AppleSupport reply: @411441 We can help. DM us and we'll meet you there. https://t.co/GDrqU22YpT",Connectivity,direct_instruction,ESCALATE,5,5,3,5,,,,,
+968704,@115858 wrf is up with the latest update? Phone is nearly unusable; battery dies from 100% in 3 hrs. Any1 else have this prob?,Thanks for reaching out! In similar cases we've suggested: Let’s get this sorted out together. Send us a DM with more details and we'll go from there. https://t.co/GDrqU22YpT Let us know if that helps.,"[1] similarity=1.000 response_type=confirmation/status
+    historical customer message: @115858 wrf is up with the latest update? Phone is nearly unusable; battery dies from 100% in 3 hrs. Any1 else have this prob?
+    historical AppleSupport reply: @349955 Let’s get this sorted out together. Send us a DM with more details and we'll go from there. https://t.co/GDrqU22YpT
+[2] similarity=0.261 response_type=DM handoff
+    historical customer message: @AppleSupport my phone is always at 100% and dies even even it's at 100%. It keeps shitting down. Help!!!! https://t.co/rO8vHCjndA
+    historical AppleSupport reply: @609137 We'd like to help you out with your iPhone. Let's continue chatting via DM so we can dig in to this in greater detail. https://t.co/GDrqU22YpT
+[3] similarity=0.254 response_type=clarifying question
+    historical customer message: my phone dies at 100% @AppleSupport pls help
+    historical AppleSupport reply: @194332 That's surely unexpected, but we can help. Which iPhone do you have &amp; what version of iOS is installed?",Battery & Performance,confirmation/status,AUTO-HANDLE,4,5,3,5,,,,,
+2450925,So I went through this whole process to get back into my ICloud account and all my saved content (pics/video) is gone. Wtf? @115858,Thanks for letting us know. We'd like to help get as many photos and videos back as possible. Which model do you have and OS version? Steps tried? (Similar cases needed this detail before we could help further.),"[1] similarity=1.000 response_type=clarifying question
+    historical customer message: So I went through this whole process to get back into my ICloud account and all my saved content (pics/video) is gone. Wtf? @115858
+    historical AppleSupport reply: @702381 We'd like to help get as many photos and videos back as possible. Which model do you have and OS version? Steps tried?
+[2] similarity=0.350 response_type=DM handoff
+    historical customer message: messages gone again. wtf @115858
+    historical AppleSupport reply: @550494  We'd love to help with your messages. Please DM us additional details and we'll be happy to review this further for you. https://t.co/GDrqU22YpT
+[3] similarity=0.337 response_type=DM handoff
+    historical customer message: ALL MY NOTES FOR RAW ARE GONE WTF @115858
+    historical AppleSupport reply: @733715 Let's have a look at this together. Can you please DM us? https://t.co/GDrqU22YpT",Apple Music / iCloud Sync & Data Loss,clarifying_question,AUTO-HANDLE,5,5,3,5,,,,,
+745823,Dear @115858 ! The iOS11 is very beautiful but the battery life is terrifyingly bad. This is the worst battery life ever on my iPhone. 😢😕,Thanks for reaching out! In similar cases we've suggested: We'd like to help with this. Have you tried any of the suggestions here: https://t.co/bivpdfBNJ6 Let us know if this helps. Let us know if that helps.,"[1] similarity=1.000 response_type=direct instruction/link
+    historical customer message: Dear @115858 ! The iOS11 is very beautiful but the battery life is terrifyingly bad. This is the worst battery life ever on my iPhone. 😢😕
+    historical AppleSupport reply: @298307 We'd like to help with this. Have you tried any of the suggestions here: https://t.co/bivpdfBNJ6 Let us know if this helps.
+[2] similarity=0.495 response_type=DM handoff
+    historical customer message: @115858 can we please get iOS 11.2 already my iPhone X has the worst battery life!
+    historical AppleSupport reply: @630982 That should not be happening. Let us help. Tell us more about this in DM. https://t.co/GDrqU22YpT
+[3] similarity=0.461 response_type=clarifying question
+    historical customer message: @AppleSupport why is the battery life on my iPhone 7 so bad since updating to #iOS11 😡😩🤔
+    historical AppleSupport reply: @227674 We want to help with this. Which iOS 11 version are you on currently? Find out in Settings &gt; General &gt; About.",Battery & Performance,direct_instruction,AUTO-HANDLE,5,5,4,5,,,,,
+810369,Anyone else having trouble signing in to Apple’s bug reporter right now?  cc @AppleSupport,Thanks for reaching out! In similar cases we've suggested: Be sure to reach out to the developer teams and let them know: https://t.co/LIrs0dB6kH Let us know if that helps.,"[1] similarity=1.000 response_type=direct instruction/link
+    historical customer message: Anyone else having trouble signing in to Apple’s bug reporter right now?  cc @AppleSupport
+    historical AppleSupport reply: @313081 Be sure to reach out to the developer teams and let them know: https://t.co/LIrs0dB6kH
+[2] similarity=0.321 response_type=clarifying question
+    historical customer message: Hey @AppleSupport bug reporter isn’t working…
+    historical AppleSupport reply: @164776 Are you currently using beta software? If so, is this for macOS or iOS?
+[3] similarity=0.292 response_type=clarifying question
+    historical customer message: Cc:  @AppleSupport https://t.co/Apfs6wkQSc
+    historical AppleSupport reply: @346415 Let's take a look together. Which macOS &amp; iOS versions are installed on your Mac and iPhone?","Account, Purchases & Billing",direct_instruction,ESCALATE,4,5,3,5,,,,,
+2710941,So why has the i issue not be fixed @115858 @AppleSupport or am I️ doing something incorrect.,"Thanks for reaching out! In similar cases we've suggested: An update has been released to assist with this issue. If you haven’t yet, please back up your device and update it to iOS 11.1.2. For more info, check out: https://t.co/4f8hwT5to6 Let us know if that helps.","[1] similarity=1.000 response_type=direct instruction/link
+    historical customer message: So why has the i issue not be fixed @115858 @AppleSupport or am I️ doing something incorrect.
+    historical AppleSupport reply: @761169 An update has been released to assist with this issue. If you haven’t yet, please back up your device and update it to iOS 11.1.2. For more info, check out: https://t.co/4f8hwT5to6
+[2] similarity=0.714 response_type=direct instruction/link
+    historical customer message: Why is the I️ issue fixed yet, @115858?
+    historical AppleSupport reply: @630372 Here’s what you can do to work around the issue until it’s fixed in a future software update: https://t.co/xXaXeeSRt9
+[3] similarity=0.526 response_type=direct instruction/link
+    historical customer message: @AppleSupport WHY IS THE I️ DOING THIS.
+    historical AppleSupport reply: @526165 Here’s what you can do to work around the issue until it’s fixed in a future software update: https://t.co/xXaXeeSRt9",Software / App Bug Report,direct_instruction,AUTO-HANDLE,5,5,4,5,,,,,
+1807918,"@AppleSupport how do I disconnect Health from Runkeeper? Health looks like it’s not connected but Runkeeper says otherwise? Pics below, TIA https://t.co/S3TGZM003R",Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?,"[1] similarity=1.000 response_type=DM handoff
+    historical customer message: @AppleSupport how do I disconnect Health from Runkeeper? Health looks like it’s not connected but Runkeeper says otherwise? Pics below, TIA https://t.co/S3TGZM003R
+    historical AppleSupport reply: @493747 Try the steps in this article then try turning off Apple Health in Runkeeper: https://t.co/fUZ0NRJxcn Questions? DM us. https://t.co/GDrqU22YpT
+[2] similarity=0.232 response_type=DM handoff
+    historical customer message: @AppleSupport everything you produce looks like this https://t.co/u2NZuzVhfc
+    historical AppleSupport reply: @298753 We certainly want to help you sort out the keyboard! Please send us a DM to look into this together. https://t.co/GDrqU22YpT
+[3] similarity=0.220 response_type=other/unclear
+    historical customer message: This is what leadership looks like. https://t.co/oWuHpp8U4b
+    historical AppleSupport reply: @192579 We'd like to get you to the team that best supports billing. Please reach our iTunes Store here: https://t.co/SDIe7UiyJN",Connectivity,dm_handoff,ESCALATE,4,5,3,5,,,,,
+2012128,@AppleSupport 6s went from 48% to 0% battery sitting in my pocket while on battery saver after update. No apps open. How is this possible??,Thanks for letting us know. We know the importance of having great battery life. Which software version is currently running on your phone? (Similar cases needed this detail before we could help further.),"[1] similarity=1.000 response_type=clarifying question
+    historical customer message: @AppleSupport 6s went from 48% to 0% battery sitting in my pocket while on battery saver after update. No apps open. How is this possible??
+    historical AppleSupport reply: @594976  We know the importance of having great battery life. Which software version is currently running on your phone?
+[2] similarity=0.258 response_type=clarifying question
+    historical customer message: @AppleSupport I have the 6S
+    historical AppleSupport reply: @463293 Do you recall ever signing up for the iOS Beta program or having it installed?
+[3] similarity=0.244 response_type=clarifying question
+    historical customer message: @AppleSupport i dunno what you did in iOS 11, but my iPhone 7 battery went from 48% to 38% in 5 minutes😒
+    historical AppleSupport reply: @756674 We'd be happy to look into the battery drain you experienced. Which iOS 11 version did you experience this on? You can check that by going to Settings &gt; General &gt; About &gt; Version.",Battery & Performance,clarifying_question,AUTO-HANDLE,5,5,4,5,,,,,
+2964142,@AppleSupport Just wondering two things:  1 - Why are movies that I *DIDN’T* purchase showing up in my iTunes?  2 - Why do I now have duplicates of movies that I *DID* purchase?  Please help.,Thanks for letting us know. Thanks for reaching out. We'd be happy to help. Which device are you seeing these duplicates and movies you haven't purchased? (Similar cases needed this detail before we could help further.),"[1] similarity=1.000 response_type=clarifying question
+    historical customer message: @AppleSupport Just wondering two things:  1 - Why are movies that I *DIDN’T* purchase showing up in my iTunes?  2 - Why do I now have duplicates of movies that I *DID* purchase?  Please help.
+    historical AppleSupport reply: @817853 Thanks for reaching out. We'd be happy to help. Which device are you seeing these duplicates and movies you haven't purchased?
+[2] similarity=0.320 response_type=DM handoff
+    historical customer message: @AppleSupport I have a question about an iTunes purchase could you help me ?
+    historical AppleSupport reply: @217575 We'll do whatever we can to help. DM us your question. https://t.co/GDrqU22YpT
+[3] similarity=0.254 response_type=direct instruction/link
+    historical customer message: @AppleSupport I linked my Movies Anywhere account to iTunes (previously DMA) and my movies aren’t showing up. How long does it take?
+    historical AppleSupport reply: @328751 We'd like to help. Check to see if the account is connected by using this article: https://t.co/xiuoPRIe9L",Apple Music / iCloud Sync & Data Loss,clarifying_question,ESCALATE,5,5,4,5,,,,,
+1220007,"iOS 11 ou la fin de l'iPhone 6. Depuis l'installation du iOS plus rien ne marche, merci @AppleSupport",Thanks for reaching out! In similar cases we've suggested: We offer support via Twitter in English. Contact us for help in your preferred language here: https://t.co/IBIY3vMgPj Let us know if that helps.,"[1] similarity=1.000 response_type=direct instruction/link
+    historical customer message: iOS 11 ou la fin de l'iPhone 6. Depuis l'installation du iOS plus rien ne marche, merci @AppleSupport
+    historical AppleSupport reply: @406229 We offer support via Twitter in English. Contact us for help in your preferred language here: https://t.co/IBIY3vMgPj
+[2] similarity=0.284 response_type=direct instruction/link
+    historical customer message: Depuis ios11 le Wi-fi et le Bluetooth du centre de contrôle ne servent plus à rien! Ne se désactivent pas et s’activent tous seuls @115858
+    historical AppleSupport reply: @330318 We offer support via Twitter in English. Contact us for help in your preferred language here: https://t.co/IBIY3vMgPj
+[3] similarity=0.219 response_type=direct instruction/link
+    historical customer message: @AppleSupport Le capteur de proximité ne marche pas sur l'iPhone lorsqu'on récupère un appel initié depuis l'#AppleWatch
+    historical AppleSupport reply: @390859 We offer support via Twitter in English. Contact us for help in your preferred language here: https://t.co/IBIY3vMgPj",Connectivity,direct_instruction,AUTO-HANDLE,5,5,3,5,,,,,
+548202,"Damn the #iPhone 5S , become stupid with ios 11 , I want to buy #note8 @115858 @125607",Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?,"[1] similarity=1.000 response_type=other/unclear
+    historical customer message: Damn the #iPhone 5S , become stupid with ios 11 , I want to buy #note8 @115858 @125607
+    historical AppleSupport reply: @247568 You’re in the right place for help. Tell us what’s happening with your iPhone, and we’ll partner with you to work towards a resolution.
+[2] similarity=0.276 response_type=DM handoff
+    historical customer message: Why are all my screenshots Black? 😳 @115858 stupid ios 11😣
+    historical AppleSupport reply: @610837 We want to help. Send us a DM and let us know the device this is occurring with and the exact version of iOS 11. https://t.co/GDrqU22YpT
+[3] similarity=0.255 response_type=DM handoff
+    historical customer message: @AppleSupport my iPhone 5S is too bad with this IOS 11
+    historical AppleSupport reply: @573658 We'd love to help with your iPhone. Can you DM is a little more detail on what's happening with your iPhone exactly on iOS 11? https://t.co/GDrqU22YpT",Battery & Performance,unclear,ESCALATE,4,5,2,5,,,,,
+2302116,.@AppleSupport Can we get a iMessage app for our contacts?,Thanks for reaching out! In similar cases we've suggested: We appreciate your feedback. Let us know about iMessage features you'd like to see implemented here: https://t.co/eTPVYVFyd8 Let us know if that helps.,"[1] similarity=1.000 response_type=direct instruction/link
+    historical customer message: .@AppleSupport Can we get a iMessage app for our contacts?
+    historical AppleSupport reply: @574954 We appreciate your feedback. Let us know about iMessage features you'd like to see implemented here: https://t.co/eTPVYVFyd8
+[2] similarity=0.657 response_type=clarifying question
+    historical customer message: @AppleSupport is iMessage down ?
+    historical AppleSupport reply: @330822 We don't show any current issues with iMessage, but we'd like to find out more about what you're experiencing. What's going on?
+[3] similarity=0.646 response_type=DM handoff
+    historical customer message: @AppleSupport my iMessage app store disappeared https://t.co/e61dVYevJ1
+    historical AppleSupport reply: @540328 Thanks for reaching out to us. We are always happy to help. Send us a DM so we can look into this with you there. https://t.co/GDrqU22YpT",Messaging & Communication,direct_instruction,AUTO-HANDLE,5,5,4,5,,,,,
+907059,IOS 11.0.3 causes my phone to freeze more than my blackberry did in 2010. @115858 @AppleSupport,Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?,"[1] similarity=1.000 response_type=DM handoff
+    historical customer message: IOS 11.0.3 causes my phone to freeze more than my blackberry did in 2010. @115858 @AppleSupport
+    historical AppleSupport reply: @335373 We'd be happy to look into this with you. Send us a DM to get started. https://t.co/GDrqU22YpT
+[2] similarity=0.304 response_type=direct instruction/link
+    historical customer message: Serious bug with iOS 11 that causes a boot loop. It keeps hitting iPhones in the middle east. Even with iOS 11.1.1 @AppleSupport
+    historical AppleSupport reply: @691419 We want to be sure you can use your iPhone after updating it. Check out the troubleshooting steps outlined here under ""If your device turns on but gets stuck during start up"": https://t.co/8MvHMFZ83h Let us know if this helps you.
+[3] similarity=0.274 response_type=DM handoff
+    historical customer message: @115858 IOS 11 causes my iPhone 7 to turn off at 30%!!!! I was out and needed my phone and it went OFF ?! NEVER had problems before it
+    historical AppleSupport reply: @579651 We'd like to look into this with you! Join us in DM with the exact version of iOS 11 that your iPhone 7 is running. https://t.co/GDrqU22YpT",Battery & Performance,dm_handoff,ESCALATE,4,5,3,5,,,,,
+1695006,@AppleSupport I have a new iPhone 6 as well as iPad 2017 model.can I charge my iPhone with iPad charger and vice versa?,Thanks for reaching out! In similar cases we've suggested: This article here has some great info about that. https://t.co/w7T6ugRbaM Let us know if that helps.,"[1] similarity=1.000 response_type=direct instruction/link
+    historical customer message: @AppleSupport I have a new iPhone 6 as well as iPad 2017 model.can I charge my iPhone with iPad charger and vice versa?
+    historical AppleSupport reply: @514270 This article here has some great info about that. https://t.co/w7T6ugRbaM
+[2] similarity=0.463 response_type=direct instruction/link
+    historical customer message: @AppleSupport hii is save if i charge my iphone with ipad charger?
+    historical AppleSupport reply: @526422 Hey there. Great question! That won't be a problem at all. Learn more here: https://t.co/w7T6ugRbaM
+[3] similarity=0.460 response_type=direct instruction/link
+    historical customer message: @AppleSupport Is it safe to charge iPhone X with iPad charger?
+    historical AppleSupport reply: @296604 We'd love to help you out with your question. You can charge your iPhone X with an iPad Apple brand power adapter. Check out this article for more info: https://t.co/AfYCHTdmCs","Hardware, Repair & Warranty",direct_instruction,ESCALATE,4,5,4,5,,,,,
+756521,@AppleSupport Apple Music Bluetooth has been screwed up since update,Thanks for letting us know. We want to be sure you can enjoy your music. Which device are you using? What's happening specifically? (Similar cases needed this detail before we could help further.),"[1] similarity=1.000 response_type=clarifying question
+    historical customer message: @AppleSupport Apple Music Bluetooth has been screwed up since update
+    historical AppleSupport reply: @300798 We want to be sure you can enjoy your music. Which device are you using? What's happening specifically?
+[2] similarity=0.354 response_type=DM handoff
+    historical customer message: @AppleSupport apple music not working
+    historical AppleSupport reply: @418485 We're happy to help! DM us the issue you're having with Apple Music to get started sorting this out. https://t.co/GDrqU22YpT
+[3] similarity=0.302 response_type=DM handoff
+    historical customer message: @AppleSupport my Apple Music isn't working
+    historical AppleSupport reply: @268407 We'd be happy to review this for you. Please DM us and we'll go from there. https://t.co/GDrqU22YpT","Account, Purchases & Billing",clarifying_question,ESCALATE,5,5,4,5,,,,,
+219051,i need some help yo @AppleSupport,Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?,"[1] similarity=1.000 response_type=other/unclear
+    historical customer message: i need some help yo @AppleSupport
+    historical AppleSupport reply: @168224 We're glad to help! Tell us what's happening and we'll get started.
+[2] similarity=0.558 response_type=clarifying question
+    historical customer message: @AppleSupport can you help me yo you literally replying to everyone else except me 👋🏼 https://t.co/AG3KoDLJ7e
+    historical AppleSupport reply: @123675 We'd be happy to see how we can help. What's going on?
+[3] similarity=0.539 response_type=DM handoff
+    historical customer message: Yo @AppleSupport I️ I️ I️ I️ I️ I️ I️ I️
+    historical AppleSupport reply: @129211 We're here to help. Send us a DM with your iOS version, and we'll continue there. https://t.co/GDrqU22YpT",General / Pre-Purchase Inquiry,unclear,ESCALATE,4,5,2,5,,,,,
+1818420,@116333 @AppleSupport It has been not a week using iPhone 8 and got lots of scratches on back glass. my iphone 5s still has no scratch.,Thanks for reaching out! We'd like to take a closer look at this with you -- could you send us a DM with a bit more detail so we can help further?,"[1] similarity=1.000 response_type=DM handoff
+    historical customer message: @116333 @AppleSupport It has been not a week using iPhone 8 and got lots of scratches on back glass. my iphone 5s still has no scratch.
+    historical AppleSupport reply: @198899 We'd be happy to look into this with you. DM us which country you're in and we'll continue support with you there. https://t.co/GDrqU22YpT
+[2] similarity=0.343 response_type=DM handoff
+    historical customer message: @AppleSupport thought new iPhone was best glass ever. Then why from being in my pocket with nothing it has scratches on the glass?
+    historical AppleSupport reply: @272474 Send us a DM. We can look into service options with you. Let us know the country you're in. https://t.co/GDrqU22YpT
+[3] similarity=0.317 response_type=DM handoff
+    historical customer message: @116333  @AppleSupport  @115858  Just putting this out there that the glass on the iPhone 8 plus is not the strongest glass on a smartphone
+    historical AppleSupport reply: @385671 We are here to help. DM us and we can take a look at service options for you. https://t.co/GDrqU22YpT",Battery & Performance,dm_handoff,ESCALATE,4,5,3,5,,,,,
+1288263,So I update my phone to the new iOS and I can’t get into my Apple Music @AppleSupport I need some help man 🤦🏻‍♂️,Thanks for reaching out! In similar cases we've suggested: We’re investigating and will update our System Status page as more info becomes available: https://t.co/Fcu0biZf0L Let us know if that helps.,"[1] similarity=1.000 response_type=confirmation/status
+    historical customer message: So I update my phone to the new iOS and I can’t get into my Apple Music @AppleSupport I need some help man 🤦🏻‍♂️
+    historical AppleSupport reply: @232756 We’re investigating and will update our System Status page as more info becomes available: https://t.co/Fcu0biZf0L
+[2] similarity=0.477 response_type=direct instruction/link
+    historical customer message: I need @89349 &amp; @84365 on Apple Music, please!   @AppleSupport
+    historical AppleSupport reply: @663115 Thanks for reaching out! Your best bet to have your requests heard is to use this link: https://t.co/vcSzj5tstI
+[3] similarity=0.413 response_type=DM handoff
+    historical customer message: @AppleSupport I NEED HELP
+    historical AppleSupport reply: @431458 We’d be glad to help. Go ahead and let us know as many details you can about the situation via DM. https://t.co/GDrqU22YpT","Account, Purchases & Billing",confirmation/status,ESCALATE,4,4,3,4,,,,,
+2748380,"@AppleSupport I backed my phone up, removed all things on the phone because I was trading it in, I’ve now got a new phone and logged into my iCloud.. everything has re-uploaded apart from my photos.. HELP 😫",Thanks for reaching out! In similar cases we've suggested: Thanks for reaching out. Are you able to see your photos from https://t.co/MdGttkkFL9 on a computer? Let us know if that helps.,"[1] similarity=1.000 response_type=direct instruction/link
+    historical customer message: @AppleSupport I backed my phone up, removed all things on the phone because I was trading it in, I’ve now got a new phone and logged into my iCloud.. everything has re-uploaded apart from my photos.. HELP 😫
+    historical AppleSupport reply: @148632 Thanks for reaching out. Are you able to see your photos from https://t.co/MdGttkkFL9 on a computer?
+[2] similarity=0.327 response_type=DM handoff
+    historical customer message: @AppleSupport i backed my photos on icloud photo library,everything else downloaded apart my photos it’s in the cloud but it won’t download😩
+    historical AppleSupport reply: @517731 Let's work on this together. Can you please DM us? https://t.co/GDrqU22YpT
+[3] similarity=0.306 response_type=clarifying question
+    historical customer message: @AppleSupport Hi! I got a new phone and I set it up as a new iPhone and logged into I'm iCloud after but I've only got some of my contacts
+    historical AppleSupport reply: @409001 Congrats on the new iPhone! Let's find those contacts. Have you signed into your other accounts? They could be linked.",Apple Music / iCloud Sync & Data Loss,direct_instruction,AUTO-HANDLE,5,5,4,5,,,,,
