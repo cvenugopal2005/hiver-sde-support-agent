@@ -834,3 +834,106 @@ cosine similarity — no vector database needed at this scale. Every result
 is tagged with how AppleSupport actually responded, because I already knew
 from earlier analysis that half of replies are just 'DM us,' not an actual
 fix, so I can't let retrieval imply otherwise."
+
+
+STEP 12 — GROUNDED REPLY GENERATION
+=========================================================
+
+What we did: Built scripts/generate_support_reply.py, which chains the
+Step 10 intent classifier, the Step 11 retriever (top 5), and a reply
+generator into one function: generate_support_reply(customer_message).
+It defines a small LLMProvider abstraction (an AnthropicLLMProvider is
+implemented but unused) and auto-selects mock mode because no LLM API key
+is configured in this environment (confirmed in Step 9). Mock mode never
+calls a model — it's a deterministic template that grounds the reply ONLY
+in the single most similar retrieved historical example: if that example's
+response_type is a DM handoff or unclear, the reply is a safe "please DM
+us" prompt; if it's a clarifying question, the reply echoes that real
+question; otherwise it reuses the real historical instruction text. This
+mode is always reported explicitly ("mode": "mock") and is never presented
+as an LLM result. Added scripts/demo_support_agent.py (6 queries across 5
+intents) and tests/test_generate_support_reply.py (8 tests: classifier
+loads, retriever returns results, mock mode triggers with no API key,
+mock mode triggers even if LLM_PROVIDER is set without a key, no reply is
+ever empty).
+
+Why: The assignment wants a concrete, ungrounded-hallucination-free reply
+draft, but building this without an API key still had to be testable and
+honest — a mock that pretended to be an LLM would misrepresent the demo.
+Grounding on the single closest match (not a vote across all 5) matters
+because an earlier version voted across the top 5 retrieved results, and
+a majority of less-similar DM handoffs kept overriding a genuinely useful
+instruction sitting at rank 1 (e.g. the "I" autocorrect bug's real
+workaround link) — that produced the same generic fallback for nearly
+every query regardless of what evidence was actually available.
+
+Key result: All 8 tests pass. Demo (mock mode, no LLM configured) across 6
+queries: WiFi and photos-disappeared queries correctly echoed real
+retrieved clarifying questions; the "I" autocorrect bug query correctly
+surfaced the real historical workaround link; battery, billing, and
+screen-crack queries all fell back to the safe DM-handoff prompt because
+their single closest historical match was itself a DM handoff or an
+escalation referral — never an invented fix. One honest classifier miss
+was observed: "My iPhone screen cracked, what's the warranty repair
+process" was predicted as Battery & Performance, not Hardware/Repair &
+Warranty (expected — 450-example silver-label classifier, not evaluated
+against a golden set).
+
+Interview explanation: "The reply generator never invents anything — it
+either reuses real historical text or refuses to guess and asks a
+clarifying question / points to DM, based on what the single most similar
+past case actually looked like. Right now that's a template because I
+don't have an API key, but it's built behind a provider interface so
+swapping in a real LLM is a one-env-var change, and the prompt I'd send it
+is already constructed and tested the same way in both modes."
+
+
+STEP 13 — AUTO-HANDLE VS ESCALATE DECISION
+=========================================================
+
+What: Built scripts/decide_handling.py, with
+decide_handling(customer_message, predicted_intent, retrieved_evidence,
+draft_reply) returning {decision, reason}. No LLM — nine simple, ordered,
+explicit rules over signals already produced by Steps 10-12: (1) no draft
+reply/no evidence -> ESCALATE, (2) sensitive intent (Account, Purchases &
+Billing) -> ESCALATE always, (3) sensitive keyword in the raw message
+(password, refund, charged, etc.) -> ESCALATE as a safety net even if
+intent classification is wrong, (4) low classifier confidence in the
+predicted intent -> ESCALATE, (5) weak top-1 retrieval similarity ->
+ESCALATE, (6) top-1 response_type is DM handoff or unclear -> ESCALATE
+(never claims a DM handoff means resolved), (7) top-1 is a clarifying
+question -> AUTO-HANDLE, (8) top-1 is a genuine instruction/confirmation
+with strong similarity -> AUTO-HANDLE, (9) anything else -> ESCALATE. Added
+scripts/demo_handling_decisions.py (8 real-style queries).
+
+Why: The assignment needs a concrete, explainable AUTO-HANDLE/ESCALATE
+call, not a black box — every decision needs a reason a human reviewer can
+check, and the rules must never let a DM handoff pass as a resolved case.
+
+Result: The confidence threshold (rule 4) was NOT picked arbitrarily —
+tested against the Step 10 test set first: a 0.40 cutoff kept only 9/66
+(14%) of predictions, escalating almost everything regardless of evidence.
+Checking the real distribution (8 classes, random baseline ~0.125; median
+confidence 0.23) showed accuracy jumps from 0.64 (all predictions) to 0.89
+among predictions with confidence >= 0.25, so 0.25 was used instead — an
+evidence-based choice, not a guess. Demo (8 queries): 7 ESCALATE, 1
+AUTO-HANDLE. ESCALATE reasons observed: DM-handoff-only evidence, sensitive
+billing intent, sensitive keyword ("password") despite a different
+predicted intent, and low classifier confidence. The one AUTO-HANDLE was a
+safe, reusable clarifying question (WiFi query). Honest finding: because
+this baseline classifier's confidence is broadly low, AUTO-HANDLE via the
+"strong instruction + confident intent" branch (rule 8) essentially never
+fires in practice yet — auto-handling currently only happens through the
+lowest-risk clarifying-question path. This wasn't forced or tuned around;
+several additional real-style queries were tried and none reached rule 8
+either.
+
+Interview explanation: "The decision logic is intentionally simple and
+rule-based, not an LLM judgment call, so every ESCALATE or AUTO-HANDLE has
+a reason a person can audit. I calibrated the confidence threshold against
+real held-out predictions instead of picking a number — 0.40 turned out to
+escalate almost everything, so I checked the actual accuracy-vs-confidence
+curve and used 0.25 instead. Right now the system is conservative: it
+mostly escalates, and auto-handles only the lowest-risk case, a clarifying
+question — which given a still-unevaluated baseline classifier and no
+golden set yet, is the right failure mode to be biased toward."
